@@ -16,4 +16,13 @@ This project provides a modular set of Terraform templates to deploy **Databrick
 
 ---
 
+## How it works:
+
+---
+
+## Secure Reference Architecture
+This project aligns with the official Databricks Secure Reference Architecture (SRA):
+
+[Databricks Terraform SRA – Azure](https://github.com/databricks/terraform-databricks-sra)
+
 
