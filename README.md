@@ -3,7 +3,7 @@ Reusable Terraform modules to provision simple, cost-effective Databricks sandbo
 
 ## Databricks Sandbox Terraform Module
 
-This project provides a modular set of Terraform templates to deploy **Databricks sandbox environments on Azure**. It's designed for simplicity, cost-efficiency, and reusability in mind — enabling data engineers at made tech to quickly spin up and tear down sandbox workspaces with minimal overhead.
+This project provides a modular set of Terraform templates to deploy **Databricks sandbox environments on AWS**. It's designed for simplicity, cost-efficiency, and reusability in mind — enabling data engineers at made tech to quickly spin up and tear down sandbox workspaces with minimal overhead.
 
 ---
 
