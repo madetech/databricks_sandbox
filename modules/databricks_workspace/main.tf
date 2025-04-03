@@ -1,12 +1,13 @@
-provider "databricks" {
-  alias  = "mws"
-  host   = "https://accounts.cloud.databricks.com"
-  client_id     = var.client_id
-  client_secret = var.client_secret
-}
+// ------------------------------------------
+// MODULE: databricks_workspace
+// This file defines how to create a Databricks workspace using the Databricks provider
+// It is a reusable building block, NOT meant to be run directly.
+// ------------------------------------------
 
-resource "databricks_mws_workspaces" "this" {
-  provider           = databricks.mws
+
+#Creates a databricks workspace in AWS using the provided values 
+#The Resource block
+resource "databricks_mws_workspaces" "databricks_workspace" {
   account_id         = var.databricks_account_id
   aws_region         = var.region
   workspace_name     = "${var.resource_prefix}-workspace"
@@ -15,6 +16,4 @@ resource "databricks_mws_workspaces" "this" {
   credentials_id     = var.credentials_id
   storage_configuration_id = var.storage_config_id
   network_id         = var.network_id
-  customer_managed_key_id = null
-  admin_users        = [var.admin_user]
 }
