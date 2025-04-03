@@ -27,8 +27,8 @@ module "workspace" {
 module "networking" {
   source = "../../modules/networking"
 
-  resource_prefix      = var.resource_prefix
-  vpc_cidr_block       = var.vpc_cidr_block
-  public_subnet_cidr   = var.public_subnet_cidr
-  availability_zone    = var.availability_zone
+  resource_prefix   = var.resource_prefix
+  vpc_cidr          = var.vpc_cidr
+  subnet_cidr       = var.subnet_cidr
+  availability_zone = var.availability_zone
 }
