@@ -10,6 +10,10 @@
 #Contains module block that is called, no actual resources
 module "workspace" {
   source = "../../modules/databricks_workspace"
+  
+  providers = {
+    databricks = databricks.mws
+  }
 
   databricks_account_id = var.databricks_account_id
   client_id             = var.client_id
