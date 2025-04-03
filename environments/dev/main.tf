@@ -1,17 +1,11 @@
 // ------------------------------------------
 // ENVIRONMENT: dev
-// This file *uses* the databricks_workspace module
+// This file wires together Terraform modules to create:
+// - Networking (VPC + subnet)
+// - Databricks Workspace
+
 // It wires in the inputs and is where we run `terraform init/plan/apply`
 // ------------------------------------------
-
-terraform {
-  required_providers {
-    databricks = {
-      source  = "databricks/databricks"
-      version = "~> 1.33.0"
-    }
-  }
-}
 
 #Contains module block that is called, no actual resources
 module "workspace" {
@@ -27,5 +21,14 @@ module "workspace" {
   pricing_tier          = var.pricing_tier
   credentials_id        = var.credentials_id
   storage_config_id     = var.storage_config_id
-  network_id            = var.network_id
+  network_id            = module.networking.subnet_id
+}
+
+module "networking" {
+  source = "../../modules/networking"
+
+  resource_prefix      = var.resource_prefix
+  vpc_cidr_block       = var.vpc_cidr_block
+  public_subnet_cidr   = var.public_subnet_cidr
+  availability_zone    = var.availability_zone
 }
