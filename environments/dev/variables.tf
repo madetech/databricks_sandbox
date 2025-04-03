@@ -2,7 +2,7 @@ variable "databricks_account_id" {}
 variable "client_id" {}
 variable "client_secret" {}
 variable "region" {
-  default = "us-west-2"
+  default = "eu-west-1"
 }
 variable "admin_user" {}
 variable "resource_prefix" {
