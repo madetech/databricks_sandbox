@@ -1,9 +1,6 @@
 // ------------------------------------------
 // ENVIRONMENT: dev
-// This file wires together Terraform modules to create:
-// - Networking (VPC + subnet)
-// - Databricks Workspace
-
+// This file wires together Terraform modules
 // It wires in the inputs and is where we run `terraform init/plan/apply`
 // ------------------------------------------
 module "sra" {
