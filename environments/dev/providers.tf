@@ -17,6 +17,7 @@ terraform {
 
 provider "aws" {
   region = var.region
+  profile = "databricks-sandbox"
 }
 
 // initialize provider in "MWS" mode to provision new workspace
