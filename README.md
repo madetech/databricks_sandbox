@@ -23,7 +23,7 @@ This project provides a modular set of Terraform templates to deploy **Databrick
 - [ ] A Databricks **account ID** and a **service principal**
 - [ ] Terraform CLI (v1.3+)
 - [ ] AWS CLI with SSO support (`aws sso login`)
-- [ ] Databricks Terraform provider (auto-installed)
+- [ ] Databricks Terraform provider (auto-installed) 
 ---
 ## 5. Project Structure
 
