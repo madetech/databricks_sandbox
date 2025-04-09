@@ -25,6 +25,7 @@ This project provides a modular set of Terraform templates to deploy **Databrick
 - [ ] [Terraform](https://www.terraform.io/downloads) CLI (v1.3+)
 - [ ] [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 - [ ] `.env` file with secrets
+
 ---
 ## 5. Project Structure
 
