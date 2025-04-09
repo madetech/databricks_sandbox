@@ -8,7 +8,7 @@ module "sra" {
 
   providers = {
     aws            = aws
-    databricks.mws = databricks.mws
+    databricks.mws = databricks.mws 
   }
   
   region          = var.region
@@ -26,7 +26,7 @@ module "sra" {
   vpc_cidr_range            = "10.0.0.0/16"
   private_subnets_cidr      = ["10.0.1.0/24"]
   privatelink_subnets_cidr  = ["10.0.2.0/24"]
-  availability_zones        = ["eu-west-2"]
+  availability_zones        = ["eu-west-2a"]
   sg_egress_ports           = [443]
   region_bucket_name        = "sandbox-bucket-${var.region}"
   
