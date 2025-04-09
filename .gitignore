@@ -7,3 +7,7 @@ terraform.tfvars
 
 # OS junk
 .DS_Store
+
+.env
+.env_2
+*.tfplan
