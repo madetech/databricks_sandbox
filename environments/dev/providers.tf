@@ -1,26 +1,37 @@
 terraform {
   required_providers {
     databricks = {
-      source = "databricks/databricks"
+      source  = "databricks/databricks"
+      version = ">= 1.54.0"
     }
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.15.0"
+      version = ">= 5.76.0"
     }
+    null = {
+      source  = "hashicorp/null"
+      version = ">= 3.2.3"
+    }
+    time = {
+      source  = "hashicorp/time"
+      version = ">= 0.12.1"
+    }
+  # }
+  #   backend "s3" {
+  #   bucket = "made-tech-databricks-sandbox-tfstate"
+  #   key    = "dev/terraform.tfstate"
+  #   region = "eu-west-2"
   }
-#   backend "s3" {
-#     bucket = "mybucket"
-#     key    = "path/to/my/key"
-#     region = "eu-west-1"
-#   }
 }
 
+#This block is required to authenticate and deploy AWS resources, and profile refers to AWS CLI profile
 provider "aws" {
-  region = var.region
-  profile="databricks-sandbox"
+  region  = var.region
+  skip_credentials_validation = false
+  skip_metadata_api_check     = false
+  skip_requesting_account_id  = false
 }
 
-// initialize provider in "MWS" mode to provision new workspace
 provider "databricks" {
   alias         = "mws"
   host          = "https://accounts.cloud.databricks.com"
