@@ -13,17 +13,18 @@ This project provides a modular set of Terraform templates to deploy **Databrick
 
 ## 3. It provisions:
 1. A databricks workspace in AWS
-2. VPC and subnet (via SRA)
+2. VPC and subnet (via Databricks SRA module)
 3. Credentials and storage configurations
-4. Secure defaults (auto termination, no PrivateLink)
+4. Secure defaults (auto termination, no PrivateLink, Unity Catalog Support)
 
 ## 4. Prerequisites
 
-- [ ] AWS SSO access to the Made Tech sandbox account
+- [ ] AWS SSO access to the Made Tech sandbox account 
 - [ ] A Databricks **account ID** and a **service principal**
-- [ ] Terraform CLI (v1.3+)
-- [ ] AWS CLI with SSO support (`aws sso login`)
 - [ ] Databricks Terraform provider (auto-installed)
+- [ ] [Terraform](https://www.terraform.io/downloads) CLI (v1.3+)
+- [ ] [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
+- [ ] `.env` file with secrets
 ---
 ## 5. Project Structure
 
