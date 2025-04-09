@@ -14,8 +14,15 @@ This project provides a modular set of Terraform templates to deploy **Databrick
 ## 3. It provisions:
 1. A databricks workspace in AWS
 2. VPC and subnet (via SRA)
+<<<<<<< HEAD
 3. Credentials and storage configurations
 4. Secure defaults (auto termination, no PrivateLink)
+=======
+3. IAM roles, credentials and storage configurations
+4. Optional Unity Catalog metastore (toggleable)
+5. System schemas and default Unity Catalog
+4. Secure defaults (auto terminating shared compute cluster, no PrivateLink)
+>>>>>>> feat/databricks_sra
 
 ## 4. Prerequisites
 
@@ -23,7 +30,7 @@ This project provides a modular set of Terraform templates to deploy **Databrick
 - [ ] A Databricks **account ID** and a **service principal**
 - [ ] Terraform CLI (v1.3+)
 - [ ] AWS CLI with SSO support (`aws sso login`)
-- [ ] Databricks Terraform provider (auto-installed) 
+- [ ] Databricks Terraform provider (auto-installed)
 ---
 ## 5. Project Structure
 
@@ -34,7 +41,7 @@ This project provides a modular set of Terraform templates to deploy **Databrick
 │       ├── main.tf
 │       ├── variables.tf
 │       ├── outputs.tf
-│       ├── terraform.tfvars        # local only
+│       ├── terraform.tfvars        # local only, DO NOT COMMIT
 │       └── providers.tf
 ├── modules/                        # Optional for extension
 ├── .env                            # not committed
@@ -44,7 +51,7 @@ This project provides a modular set of Terraform templates to deploy **Databrick
 ---
  ## 6. Getting started
 
-1. Clone the repo above as usual
+1. Clone the repo above as usual 
 2. Create a .env file for secrets at the root of the repository (ie databricks_sandbox/.env)
 3. Add the following:
 ```bash
@@ -72,5 +79,4 @@ terraform apply
 ```bash
 terraform destroy
 ```
-
 
