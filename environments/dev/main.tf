@@ -24,10 +24,11 @@ module "sra" {
 
   network_configuration     = "isolated"
   vpc_cidr_range            = "10.0.0.0/16"
-  private_subnets_cidr      = ["10.0.1.0/24"]
-  privatelink_subnets_cidr  = ["10.0.2.0/24"]
-  availability_zones        = ["eu-west-2a"]
+  private_subnets_cidr      = ["10.0.10.0/24", "10.0.11.0/24"]
+  privatelink_subnets_cidr  = ["10.0.3.0/24"]
+  availability_zones        = ["eu-west-2a","eu-west-2b"]
   sg_egress_ports           = [443]
   region_bucket_name        = "sandbox-bucket-${var.region}"
   
 }
+
