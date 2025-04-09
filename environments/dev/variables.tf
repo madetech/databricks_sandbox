@@ -46,3 +46,9 @@ variable "client_secret" {
   type        = string
   sensitive   = true
 }
+
+variable "metastore_exists" {
+  description = "If true, reference existing Unity Catalog metastore instead of creating one."
+  type        = bool
+  default     = false
+}

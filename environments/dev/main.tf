@@ -4,7 +4,7 @@
 // It wires in the inputs and is where we run `terraform init/plan/apply`
 // ------------------------------------------
 module "sra" {
-  source = "github.com/databricks/terraform-databricks-sra//aws/tf/modules/sra?ref=main"
+  source = "../../modules/sra"
 
   providers = {
     aws            = aws
@@ -20,7 +20,7 @@ module "sra" {
   admin_user                = var.admin_user
   client_id                 = var.client_id
   client_secret             = var.client_secret
-  metastore_exists          = false
+  metastore_exists          = false  #tells module to create a new Unity Catalog metastore. this value needs to be manually switched later
 
   network_configuration     = "isolated"
   vpc_cidr_range            = "10.0.0.0/16"
