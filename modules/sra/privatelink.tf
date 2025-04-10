@@ -321,7 +321,7 @@ module "vpc_endpoints" {
   }
 }
 
-# Databricks REST endpoint - skipped in custom operation mode 
+# Databricks REST endpoint - skipped in custom operation mode
 resource "aws_vpc_endpoint" "backend_rest" {
   count = var.network_configuration != "custom" ? 1 : 0
 

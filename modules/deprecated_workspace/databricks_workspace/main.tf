@@ -5,7 +5,7 @@
 // ------------------------------------------
 
 
-#Creates a databricks workspace in AWS using the provided values 
+#Creates a databricks workspace in AWS using the provided values
 #The Resource block
 resource "databricks_mws_workspaces" "databricks_workspace" {
   account_id         = var.databricks_account_id

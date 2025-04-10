@@ -8,13 +8,13 @@ module "sra" {
 
   providers = {
     aws            = aws
-    databricks.mws = databricks.mws 
+    databricks.mws = databricks.mws
   }
-  
+
   region          = var.region
   resource_prefix = var.resource_prefix
   region_name               = var.region
-  
+
   aws_account_id            = var.aws_account_id
   databricks_account_id     = var.databricks_account_id
   admin_user                = var.admin_user
@@ -29,6 +29,5 @@ module "sra" {
   availability_zones        = ["eu-west-2a","eu-west-2b"]
   sg_egress_ports           = [443]
   region_bucket_name        = "sandbox-bucket-${var.region}"
-  
-}
 
+}

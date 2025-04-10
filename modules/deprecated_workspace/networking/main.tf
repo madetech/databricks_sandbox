@@ -1,5 +1,5 @@
 // -------------------------------------------------------------
-// This module creates a simple AWS VPC with one public subnet 
+// This module creates a simple AWS VPC with one public subnet
 // Intended to be minimal and cost effective for sandbox use
 // -------------------------------------------------------------
 

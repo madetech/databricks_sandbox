@@ -10,4 +10,6 @@ terraform.tfvars
 
 .env_2
 .env_*
+.env
+*.tfvars
 *.tfplan

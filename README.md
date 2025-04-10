@@ -51,7 +51,7 @@ This project provides a modular set of Terraform templates to deploy **Databrick
 ---
  ## 6. Getting started
 
-1. Clone the repo above as usual 
+1. Clone the repo above as usual
 2. Create a .env file for secrets at the root of the repository (ie databricks_sandbox/.env)
 3. Add the following:
 ```bash
@@ -79,4 +79,3 @@ terraform apply
 ```bash
 terraform destroy
 ```
-
