@@ -46,6 +46,8 @@ module "databricks_mws_workspace" {
   managed_storage_key_alias   = aws_kms_alias.managed_storage_key_alias.name
   workspace_storage_key_alias = aws_kms_alias.workspace_storage_key_alias.name
   deployment_name             = var.deployment_name
+  workspace_sku     = var.workspace_sku
+  admin_user = var.admin_user
 }
 
 # User Workspace Assignment (Admin)
@@ -57,6 +59,7 @@ module "user_assignment" {
 
   workspace_id     = module.databricks_mws_workspace.workspace_id
   workspace_access = var.admin_user
+  admin_user   = var.admin_user
   depends_on       = [module.uc_assignment, module.databricks_mws_workspace]
 }
 
@@ -67,6 +70,7 @@ module "log_delivery" {
     databricks = databricks.mws
   }
 
-  databricks_account_id = var.databricks_account_id
-  resource_prefix       = var.resource_prefix
+  databricks_account_id              = var.databricks_account_id
+  resource_prefix                    = var.resource_prefix
+  log_delivery_mws_credentials_name = var.log_delivery_mws_credentials_name
 }

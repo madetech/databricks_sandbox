@@ -7,16 +7,29 @@ data "databricks_spark_version" "latest_lts" {
 
 # Cluster Creation
 resource "databricks_cluster" "ZA_dev_sandbox_cluster" {
-  cluster_name            = "${var.resource_prefix}-sandbox-cluster"
+  cluster_name            = "${var.node_type_id}-sandbox-cluster"
   data_security_mode      = "USER_ISOLATION"
   spark_version           = data.databricks_spark_version.latest_lts.id
-  node_type_id            = "m5.mlarge"
+  node_type_id            = var.node_type_id
   autotermination_minutes = 15
 
   autoscale {
     min_workers = 1
     max_workers = 2
   }
+  aws_attributes {
+  availability     = "ON_DEMAND"
+  ebs_volume_type  = "GENERAL_PURPOSE_SSD"
+  ebs_volume_count = 1
+  ebs_volume_size  = 100
+  }
+  lifecycle {
+    ignore_changes = [autoscale,
+    num_workers,
+    custom_tags]
+    create_before_destroy = true
+  }
+  no_wait = true
 
   # Derby Metastore configs
   spark_conf = {

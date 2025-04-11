@@ -52,3 +52,59 @@ variable "metastore_exists" {
   type        = bool
   default     = false
 }
+
+variable "log_delivery_mws_credentials_name" {
+  type        = string
+  description = "Custom name for log delivery credentials"
+  default     = "Usage Delivery"
+}
+variable "workspace_sku" {
+  description = "The pricing tier for the Databricks workspace (STANDARD or PREMIUM)"
+  type        = string
+  default     = "PREMIUM"
+}
+
+variable "enable_nat" {
+  description = "Whether to enable NAT gateway for private subnet access"
+  type        = bool
+  default     = true
+}
+
+variable "public_subnets_cidr" {
+  description = "CIDR blocks for public subnets (used for NAT Gateway)"
+  type        = list(string)
+  default     = []
+}
+
+variable "vpc_cidr_range" {
+  type        = string
+  description = "CIDR block for VPC"
+}
+
+variable "availability_zones" {
+  type        = list(string)
+  description = "List of availability zones"
+}
+variable "private_subnets_cidr" {
+  type        = list(string)
+  description = "List of private subnet CIDR blocks"
+}
+variable "privatelink_subnets_cidr" {
+  type        = list(string)
+  description = "List of private link subnet CIDR blocks"
+}
+variable "sg_egress_ports" {
+  description = "List of ports to open for egress rules"
+  type        = list(string)
+}
+
+variable "network_configuration" {
+  description = "The type of network set-up for the workspace network configuration."
+  type        = string
+  default     = "isolated"
+
+  validation {
+    condition     = contains(["custom", "isolated"], var.network_configuration)
+    error_message = "Invalid network configuration. Allowed values are: custom, isolated."
+  }
+}

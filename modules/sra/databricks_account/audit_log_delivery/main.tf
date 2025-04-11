@@ -24,7 +24,7 @@ resource "aws_s3_bucket_public_access_block" "logdelivery" {
 resource "aws_s3_bucket_versioning" "logdelivery_versioning" {
   bucket = aws_s3_bucket.logdelivery.id
   versioning_configuration {
-    status = "Disabled"
+    status = "Enabled"
   }
 }
 
@@ -34,13 +34,13 @@ data "databricks_aws_bucket_policy" "logdelivery" {
   bucket           = aws_s3_bucket.logdelivery.bucket
 }
 
-# Bucket Policy
+# S3 Bucket Policy
 resource "aws_s3_bucket_policy" "logdelivery" {
   bucket = aws_s3_bucket.logdelivery.id
   policy = data.databricks_aws_bucket_policy.logdelivery.json
 }
 
-# Assume Role
+# IAM Assume Role Policy for Databricks
 data "databricks_aws_assume_role_policy" "logdelivery" {
   external_id      = var.databricks_account_id
   for_log_delivery = true
@@ -57,21 +57,17 @@ resource "aws_iam_role" "logdelivery" {
   }
 }
 
-# Wait for Role
+# Wait for Role Propagation
 resource "time_sleep" "wait" {
-  depends_on = [
-    aws_iam_role.logdelivery
-  ]
+  depends_on = [aws_iam_role.logdelivery]
   create_duration = "10s"
 }
 
-# Log Credential
+# Log Delivery Credential (Supports override!)
 resource "databricks_mws_credentials" "log_writer" {
-  credentials_name = "Usage Delivery"
+  credentials_name = var.log_delivery_mws_credentials_name
   role_arn         = aws_iam_role.logdelivery.arn
-  depends_on = [
-    time_sleep.wait
-  ]
+  depends_on       = [time_sleep.wait]
 }
 
 # Log Storage Configuration

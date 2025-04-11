@@ -181,3 +181,27 @@ variable "workspace" {
     #"us-west-1" = ""
   }
 }
+
+variable "log_delivery_mws_credentials_name" {
+  description = "Custom name for the log delivery credentials"
+  type        = string
+  default     = "Usage Delivery"
+}
+
+variable "workspace_sku" {
+  description = "Workspace pricing tier (standard | premium)"
+  type        = string
+  default     = "PREMIUM"
+}
+
+variable "enable_nat" {
+  description = "Whether to enable NAT gateway for private subnet access"
+  type        = bool
+  default     = true
+}
+
+variable "public_subnets_cidr" {
+  description = "CIDR blocks for public subnets (used for NAT Gateway)"
+  type        = list(string)
+  nullable    = true
+}

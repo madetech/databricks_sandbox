@@ -18,12 +18,12 @@ resource "aws_iam_role_policy" "cross_account" {
   name = "${var.resource_prefix}-crossaccount-policy"
   role = aws_iam_role.cross_account_role.id
   policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
+    "Version": "2012-10-17",
+    "Statement": [
       {
-        "Sid" : "NonResourceBasedPermissions",
-        "Effect" : "Allow",
-        "Action" : [
+        "Sid": "NonResourceBasedPermissions",
+        "Effect": "Allow",
+        "Action": [
           "ec2:CancelSpotInstanceRequests",
           "ec2:DescribeAvailabilityZones",
           "ec2:DescribeIamInstanceProfileAssociations",
@@ -46,14 +46,12 @@ resource "aws_iam_role_policy" "cross_account" {
           "ec2:DeleteTags",
           "ec2:RequestSpotInstances"
         ],
-        "Resource" : [
-          "*"
-        ]
+        "Resource": "*"
       },
       {
-        "Sid" : "FleetPermissions",
-        "Effect" : "Allow",
-        "Action" : [
+        "Sid": "FleetPermissions",
+        "Effect": "Allow",
+        "Action": [
           "ec2:DescribeFleetHistory",
           "ec2:ModifyFleet",
           "ec2:DeleteFleets",
@@ -71,58 +69,57 @@ resource "aws_iam_role_policy" "cross_account" {
           "ec2:AssignPrivateIpAddresses",
           "ec2:GetSpotPlacementScores"
         ],
-        "Resource" : [
-          "*"
-        ]
+        "Resource": "*"
       },
       {
-        "Sid" : "InstancePoolsSupport",
-        "Effect" : "Allow",
-        "Action" : [
+        "Sid": "InstancePoolsSupport",
+        "Effect": "Allow",
+        "Action": [
           "ec2:AssociateIamInstanceProfile",
           "ec2:DisassociateIamInstanceProfile",
           "ec2:ReplaceIamInstanceProfileAssociation"
         ],
-        "Resource" : "arn:aws:ec2:${var.region}:${var.aws_account_id}:instance/*",
-        "Condition" : {
-          "StringEquals" : {
-            "ec2:ResourceTag/Vendor" : "Databricks"
+        "Resource": "arn:aws:ec2:${var.region}:${var.aws_account_id}:instance/*",
+        "Condition": {
+          "StringEquals": {
+            "ec2:ResourceTag/Vendor": "Databricks"
           }
         }
       },
       {
-        "Sid" : "AllowEc2RunInstancePerTag",
-        "Effect" : "Allow",
-        "Action" : "ec2:RunInstances",
-        "Resource" : [
+        "Sid": "AllowEc2RunInstancePerTag",
+        "Effect": "Allow",
+        "Action": "ec2:RunInstances",
+        "Resource": [
           "arn:aws:ec2:${var.region}:${var.aws_account_id}:volume/*",
           "arn:aws:ec2:${var.region}:${var.aws_account_id}:instance/*"
         ],
-        "Condition" : {
-          "StringEquals" : {
-            "aws:RequestTag/Vendor" : "Databricks"
-        } }
+        "Condition": {
+          "StringEquals": {
+            "aws:RequestTag/Vendor": "Databricks"
+          }
+        }
       },
       {
-        "Sid" : "AllowEc2RunInstancePerVPCid",
-        "Effect" : "Allow",
-        "Action" : "ec2:RunInstances",
-        "Resource" : [
+        "Sid": "AllowEc2RunInstancePerVPCid",
+        "Effect": "Allow",
+        "Action": "ec2:RunInstances",
+        "Resource": [
           "arn:aws:ec2:${var.region}:${var.aws_account_id}:network-interface/*",
           "arn:aws:ec2:${var.region}:${var.aws_account_id}:subnet/*",
           "arn:aws:ec2:${var.region}:${var.aws_account_id}:security-group/*"
         ],
-        "Condition" : {
-          "StringEquals" : {
-            "ec2:vpc" : "arn:aws:ec2:${var.region}:${var.aws_account_id}:vpc/${var.custom_vpc_id != null ? var.custom_vpc_id : module.vpc[0].vpc_id}"
+        "Condition": {
+          "StringEquals": {
+            "ec2:vpc": "arn:aws:ec2:${var.region}:${var.aws_account_id}:vpc/${var.custom_vpc_id != null ? var.custom_vpc_id : module.vpc[0].vpc_id}"
           }
         }
       },
       {
-        "Sid" : "AllowEc2RunInstanceOtherResources",
-        "Effect" : "Allow",
-        "Action" : "ec2:RunInstances",
-        "NotResource" : [
+        "Sid": "AllowEc2RunInstanceOtherResources",
+        "Effect": "Allow",
+        "Action": "ec2:RunInstances",
+        "NotResource": [
           "arn:aws:ec2:${var.region}:${var.aws_account_id}:network-interface/*",
           "arn:aws:ec2:${var.region}:${var.aws_account_id}:subnet/*",
           "arn:aws:ec2:${var.region}:${var.aws_account_id}:security-group/*",
@@ -131,113 +128,97 @@ resource "aws_iam_role_policy" "cross_account" {
         ]
       },
       {
-        "Sid" : "DatabricksSuppliedImages",
-        "Effect" : "Deny",
-        "Action" : "ec2:RunInstances",
-        "Resource" : [
+        "Sid": "DatabricksSuppliedImages",
+        "Effect": "Deny",
+        "Action": "ec2:RunInstances",
+        "Resource": [
           "arn:aws:ec2:*:*:image/*"
         ],
-        "Condition" : {
-          "StringNotEquals" : {
-            "ec2:Owner" : "601306020600"
+        "Condition": {
+          "StringNotEquals": {
+            "ec2:Owner": "601306020600"
           }
         }
       },
       {
-        "Sid" : "EC2TerminateInstancesTag",
-        "Effect" : "Allow",
-        "Action" : [
+        "Sid": "EC2TerminateInstancesTag",
+        "Effect": "Allow",
+        "Action": [
           "ec2:TerminateInstances"
         ],
-        "Resource" : [
+        "Resource": [
           "arn:aws:ec2:${var.region}:${var.aws_account_id}:instance/*"
         ],
-        "Condition" : {
-          "StringEquals" : {
-            "ec2:ResourceTag/Vendor" : "Databricks"
+        "Condition": {
+          "StringEquals": {
+            "ec2:ResourceTag/Vendor": "Databricks"
           }
         }
       },
       {
-        "Sid" : "EC2AttachDetachVolumeTag",
-        "Effect" : "Allow",
-        "Action" : [
+        "Sid": "EC2AttachDetachVolumeTag",
+        "Effect": "Allow",
+        "Action": [
           "ec2:AttachVolume",
           "ec2:DetachVolume"
         ],
-        "Resource" : [
+        "Resource": [
           "arn:aws:ec2:${var.region}:${var.aws_account_id}:instance/*",
           "arn:aws:ec2:${var.region}:${var.aws_account_id}:volume/*"
         ],
-        "Condition" : {
-          "StringEquals" : {
-            "ec2:ResourceTag/Vendor" : "Databricks"
+        "Condition": {
+          "StringEquals": {
+            "ec2:ResourceTag/Vendor": "Databricks"
           }
         }
       },
       {
-        "Sid" : "EC2CreateVolumeByTag",
-        "Effect" : "Allow",
-        "Action" : [
+        "Sid": "EC2CreateVolumeByTag",
+        "Effect": "Allow",
+        "Action": [
           "ec2:CreateVolume"
         ],
-        "Resource" : [
+        "Resource": [
           "arn:aws:ec2:${var.region}:${var.aws_account_id}:volume/*"
         ],
-        "Condition" : {
-          "StringEquals" : {
-            "aws:RequestTag/Vendor" : "Databricks"
+        "Condition": {
+          "StringEquals": {
+            "aws:RequestTag/Vendor": "Databricks"
           }
         }
       },
       {
-        "Sid" : "EC2DeleteVolumeByTag",
-        "Effect" : "Allow",
-        "Action" : [
+        "Sid": "EC2DeleteVolumeByTag",
+        "Effect": "Allow",
+        "Action": [
           "ec2:DeleteVolume"
         ],
-        "Resource" : [
+        "Resource": [
           "arn:aws:ec2:${var.region}:${var.aws_account_id}:volume/*"
         ],
-        "Condition" : {
-          "StringEquals" : {
-            "ec2:ResourceTag/Vendor" : "Databricks"
+        "Condition": {
+          "StringEquals": {
+            "ec2:ResourceTag/Vendor": "Databricks"
           }
         }
       },
       {
-        "Effect" : "Allow",
-        "Action" : [
-          "iam:CreateServiceLinkedRole",
-          "iam:PutRolePolicy"
-        ],
-        "Resource" : "arn:aws:iam::*:role/aws-service-role/spot.amazonaws.com/AWSServiceRoleForEC2Spot",
-        "Condition" : {
-          "StringLike" : {
-            "iam:AWSServiceName" : "spot.amazonaws.com"
-          }
-        }
-      },
-      {
-        "Sid" : "VpcNonresourceSpecificActions",
-        "Effect" : "Allow",
-        "Action" : [
+        "Sid": "VpcNonresourceSpecificActions",
+        "Effect": "Allow",
+        "Action": [
           "ec2:AuthorizeSecurityGroupEgress",
           "ec2:AuthorizeSecurityGroupIngress",
           "ec2:RevokeSecurityGroupEgress",
           "ec2:RevokeSecurityGroupIngress"
         ],
-        "Resource" : "arn:aws:ec2:${var.region}:${var.aws_account_id}:security-group/${var.custom_sg_id != null ? var.custom_sg_id : aws_security_group.sg[0].id}",
-        "Condition" : {
-          "StringEquals" : {
-            "ec2:vpc" : "arn:aws:ec2:${var.region}:${var.aws_account_id}:vpc/${var.custom_vpc_id != null ? var.custom_vpc_id : module.vpc[0].vpc_id}"
+        "Resource": "arn:aws:ec2:${var.region}:${var.aws_account_id}:security-group/${var.custom_sg_id != null ? var.custom_sg_id : aws_security_group.sg[0].id}",
+        "Condition": {
+          "StringEquals": {
+            "ec2:vpc": "arn:aws:ec2:${var.region}:${var.aws_account_id}:vpc/${var.custom_vpc_id != null ? var.custom_vpc_id : module.vpc[0].vpc_id}"
           }
         }
       }
     ]
-    }
-  )
-  depends_on = [
-    module.vpc, aws_security_group.sg
-  ]
+  })
+  depends_on = [module.vpc, aws_security_group.sg]
 }

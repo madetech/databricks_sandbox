@@ -11,10 +11,13 @@ module "vpc" {
   azs  = var.availability_zones
 
   enable_dns_hostnames   = true
-  enable_nat_gateway     = false
-  single_nat_gateway     = false
-  one_nat_gateway_per_az = false
-  create_igw             = false
+  enable_nat_gateway     = var.enable_nat
+  single_nat_gateway     = true
+  one_nat_gateway_per_az = var.enable_nat
+  create_igw             = var.enable_nat
+
+  public_subnet_names = [for az in var.availability_zones : format("%s-public-%s", var.resource_prefix, az)]
+  public_subnets      = var.public_subnets_cidr
 
   private_subnet_names = [for az in var.availability_zones : format("%s-private-%s", var.resource_prefix, az)]
   private_subnets      = var.private_subnets_cidr
@@ -26,6 +29,39 @@ module "vpc" {
     Project = var.resource_prefix
   }
 }
+
+
+# NAT Gateway setup for bootstrap access from private subnets
+resource "aws_eip" "nat" {
+  count = var.network_configuration != "custom" ? 1 : 0
+  domain = "vpc"
+  depends_on = [module.vpc]
+
+}
+
+resource "aws_nat_gateway" "nat" {
+  count         = var.network_configuration != "custom" ? 1 : 0
+  allocation_id = aws_eip.nat[0].id
+  subnet_id     = module.vpc[0].public_subnets[0] # Assumes VPC module includes public_subnets output
+  depends_on    = [module.vpc]
+  tags = {
+    Name = "${var.resource_prefix}-nat-gateway"
+  }
+}
+# resource "aws_route" "private_subnet_nat" {
+#   count = var.network_configuration != "custom" && var.enable_nat ? length(module.vpc[0].private_route_table_ids) : 0
+
+#   route_table_id         = element(module.vpc[0].private_route_table_ids, count.index)
+#   destination_cidr_block = "0.0.0.0/0"
+#   nat_gateway_id         = aws_nat_gateway.nat[0].id
+
+#   lifecycle {
+#     create_before_destroy = true
+#     ignore_changes        = [nat_gateway_id]
+#   }
+
+#   depends_on = [aws_nat_gateway.nat]
+# }
 
 
 # Security group - skipped in custom mode

@@ -7,3 +7,8 @@ variable "workspace_access" {
   type        = string
   description = "data source for the workspace access."
 }
+
+variable "admin_user" {
+  description = "Email of initial Databricks workspace admin."
+  type        = string
+}

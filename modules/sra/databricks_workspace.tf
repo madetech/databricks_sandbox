@@ -34,6 +34,7 @@ module "cluster_configuration" {
   }
 
   resource_prefix = var.resource_prefix
+  node_type_id    = "m5.large"
 
   depends_on = [
     module.databricks_mws_workspace, module.vpc_endpoints
