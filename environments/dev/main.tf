@@ -30,5 +30,5 @@ module "sra" {
   availability_zones                = ["eu-west-2a", "eu-west-2b"]
   sg_egress_ports                   = ["443", "2443", "6666", "8443", "8451"]
   region_bucket_name                = "sandbox-bucket-${var.region}"
-  log_delivery_mws_credentials_name = "Usage Delivery v2"
+  log_delivery_mws_credentials_name = "Usage Delivery"
 }

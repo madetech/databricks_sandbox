@@ -14,15 +14,12 @@ This project provides a modular set of Terraform templates to deploy **Databrick
 ## 3. It provisions:
 1. A databricks workspace in AWS
 2. Secure networking: VPC, subnets, NAT gateway, route tables
-<<<<<<< HEAD
 3. IAM roles and cross-account trust policies
 4. KMS encryption for managed and workspace data
-=======
 5. S3 buckets for root and Unity Catalog storage (with versioning)
 6. Optional Unity Catalog metastore (toggleable)
 7. A shared compute cluster for testing
 8. Unity Catalog metastore, external location, storage credential, and default catalog
->>>>>>> feat/databricks_sra
 
 ## 4. Prerequisites
 
@@ -61,7 +58,7 @@ cd databricks_sandbox/environments/dev
 DATABRICKS_ACCOUNT_ID=acc-xxxxxxxxxxxxxxxx
 DATABRICKS_CLIENT_ID=your-databricks-client-id
 DATABRICKS_CLIENT_SECRET=your-databricks-client-secret
-AWS_ACCOUNT_ID=261219435789
+AWS_ACCOUNT_ID=your-aws-account-id
 AWS_SECRET_ACCESS_KEY=your-aws-secret-access-key
 AWS_ACCESS_KEY_ID=your-aws-key-id
 ```
@@ -113,4 +110,4 @@ terraform destroy
 * Not all workspace-level permissions (e.g. SQL access) are fully automat
 
 ## Support
-If you encounter issues with Terraform state, network setup, or authentication, reach out in the #databricks-sandbox Slack channel or tag/message me @ZeerakAziz for infrastructure-related questions.
+If you encounter issues with Terraform state, network setup, or authentication, reach out in the #cop-cloud or #data-practice Slack channel or tag/message me @ZeerakAziz for infrastructure-related questions.
