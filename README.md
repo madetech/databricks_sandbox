@@ -51,37 +51,66 @@ This project provides a modular set of Terraform templates to deploy **Databrick
 ---
  ## 6. Getting started
 
-1. Clone the repo above as usual
-2. Create a .env file for secrets at the root of the repository (ie databricks_sandbox/.env)
+1. Clone the repo above as usual and
+```bash
+cd databricks_sandbox/environments/dev
+```
+2. Create your .env file for secrets at the root of the repository (ie databricks_sandbox/.env)
 3. Add the following to the .env file:
 ```bash
 DATABRICKS_ACCOUNT_ID=acc-xxxxxxxxxxxxxxxx
 DATABRICKS_CLIENT_ID=your-databricks-client-id
 DATABRICKS_CLIENT_SECRET=your-databricks-client-secret
 AWS_ACCOUNT_ID=261219435789
-AWS_SECRET_ACCESS_KEY=
-AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=your-aws-secret-access-key
+AWS_ACCESS_KEY_ID=your-aws-key-id
 ```
 4. Edit the terrraform.tfvars file, insert your name where it says 'yourname' and leave the rest:
 ```bash
-resource_prefix    = "sandbox-yourname"
+resource_prefix    = "sandbox-yourname" #Provisioned resources will be based on your resource_prefix (e.g. sandbox-alex-shared-cluster)
+admin_user = "your.email@madetech.com" #To grant admin access to the workspace
 ```
+The resource_prefix must be unique across the AWS account to avoid naming collisions.
 5. Authenticate with AWS SSO:
 ```bash
-aws sso login --profile databricks-sandbox
+aws sso login or aws configure sso
 ```
 6. Load environment variables from .env:
 ```bash
 source ../../.env (this is in terminal)
 ```
-7. Run terraform:
+7. Unity Catalog
+The first user of the week should deploy Unity Catalog if it hasn't yet been created. If it has already been created in your Databricks account, set:
+```bash
+metastore_exists = true
+```
+When metastore_exists=false, Terraform will:
+* Create a new Unity Catalog metastore
+* Configure the root storage bucket and KMS key
+* Set up storage credentials and external locations
+* Create the default catalog and system schemas
+8. Run terraform:
 ```bash
 terraform init
 terraform validate
-terraform plan
+terraform plan #errors may start cropping up here, in which case troubleshooting will be required, read the errors carefully they explain quite well
 terraform apply
 ```
-8. To destroy and teardown the sandbox environment:
+9. To destroy and teardown the sandbox environment:
 ```bash
 terraform destroy
 ```
+
+## Notes for Contributors
+* Do not commit your .env or terraform.tfvars files.
+* Validate all Terraform changes using terraform validate.
+* Format changes using terraform fmt.
+* Follow the standard GitHub PR workflow and use feature branches.
+
+## Known Limitations
+* CloudTrail is not enabled automatically.
+* Public subnet routing is not included by default.
+* Not all workspace-level permissions (e.g. SQL access) are fully automat
+
+## Support
+If you encounter issues with Terraform state, network setup, or authentication, reach out in the #databricks-sandbox Slack channel or tag/message me @ZeerakAziz for infrastructure-related questions.
