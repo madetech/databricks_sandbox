@@ -24,7 +24,7 @@ resource "aws_s3_bucket_public_access_block" "logdelivery" {
 resource "aws_s3_bucket_versioning" "logdelivery_versioning" {
   bucket = aws_s3_bucket.logdelivery.id
   versioning_configuration {
-    status = "Disabled"
+    status = "Enabled"
   }
 }
 
