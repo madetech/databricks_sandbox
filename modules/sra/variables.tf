@@ -191,7 +191,7 @@ variable "log_delivery_mws_credentials_name" {
 variable "workspace_sku" {
   description = "Workspace pricing tier (standard | premium)"
   type        = string
-  default     = "STANDARD"
+  default     = "PREMIUM"
 }
 
 variable "enable_nat" {

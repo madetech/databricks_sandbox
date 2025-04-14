@@ -78,7 +78,7 @@ variable "workspace_storage_key_alias" {
  variable "workspace_sku" {
   type        = string
   description = "The pricing tier for the Databricks workspace"
-  default     = "STANDARD"
+  default     = "PREMIUM"
 }
 
 variable "admin_user" {

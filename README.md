@@ -13,15 +13,15 @@ This project provides a modular set of Terraform templates to deploy **Databrick
 
 ## 3. It provisions:
 1. A databricks workspace in AWS
-2. VPC and subnet (via SRA)
+2. Secure networking: VPC, subnets, NAT gateway, route tables
 <<<<<<< HEAD
-3. Credentials and storage configurations
-4. Secure defaults (auto termination, no PrivateLink)
+3. IAM roles and cross-account trust policies
+4. KMS encryption for managed and workspace data
 =======
-3. IAM roles, credentials and storage configurations
-4. Optional Unity Catalog metastore (toggleable)
-5. System schemas and default Unity Catalog
-4. Secure defaults (auto terminating shared compute cluster, no PrivateLink)
+5. S3 buckets for root and Unity Catalog storage (with versioning)
+6. Optional Unity Catalog metastore (toggleable)
+7. A shared compute cluster for testing
+8. Unity Catalog metastore, external location, storage credential, and default catalog
 >>>>>>> feat/databricks_sra
 
 ## 4. Prerequisites
@@ -53,29 +53,35 @@ This project provides a modular set of Terraform templates to deploy **Databrick
 
 1. Clone the repo above as usual
 2. Create a .env file for secrets at the root of the repository (ie databricks_sandbox/.env)
-3. Add the following:
+3. Add the following to the .env file:
 ```bash
-TF_VAR_databricks_account_id=acc-xxxxxxxxxxxxxxxx
-TF_VAR_client_id=your-databricks-client-id
-TF_VAR_client_secret=your-databricks-client-secret
-TF_VAR_aws_account_id=261219435789
+DATABRICKS_ACCOUNT_ID=acc-xxxxxxxxxxxxxxxx
+DATABRICKS_CLIENT_ID=your-databricks-client-id
+DATABRICKS_CLIENT_SECRET=your-databricks-client-secret
+AWS_ACCOUNT_ID=261219435789
+AWS_SECRET_ACCESS_KEY=
+AWS_ACCESS_KEY_ID=
 ```
-4. Authenticate with AWS SSO:
+4. Edit the terrraform.tfvars file, insert your name where it says 'yourname' and leave the rest:
+```bash
+resource_prefix    = "sandbox-yourname"
+```
+5. Authenticate with AWS SSO:
 ```bash
 aws sso login --profile databricks-sandbox
 ```
-5. Load environment variables from .env:
+6. Load environment variables from .env:
 ```bash
 source ../../.env (this is in terminal)
 ```
-6. Run terraform:
+7. Run terraform:
 ```bash
 terraform init
 terraform validate
 terraform plan
 terraform apply
 ```
-7. To destroy and teardown the sandbox environment:
+8. To destroy and teardown the sandbox environment:
 ```bash
 terraform destroy
 ```
