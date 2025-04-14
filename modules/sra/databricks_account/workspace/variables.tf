@@ -73,3 +73,15 @@ variable "workspace_storage_key_alias" {
   description = "CMK for workspace storage alias."
   type        = string
 }
+
+
+ variable "workspace_sku" {
+  type        = string
+  description = "The pricing tier for the Databricks workspace"
+  default     = "STANDARD"
+}
+
+variable "admin_user" {
+  description = "Email of initial Databricks workspace admin."
+  type        = string
+}
