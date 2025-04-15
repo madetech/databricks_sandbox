@@ -61,6 +61,13 @@ DATABRICKS_CLIENT_SECRET=your-databricks-client-secret
 AWS_ACCOUNT_ID=your-aws-account-id
 AWS_SECRET_ACCESS_KEY=your-aws-secret-access-key
 AWS_ACCESS_KEY_ID=your-aws-key-id
+
+Where to find your credentials:
+DATABRICKS_ACCOUNT_ID: Databricks Account Console (e.g. https://accounts.cloud.databricks.com/?o=acc-xxxxxxxxxxxxxxxx) → top right dropdown → copy Account ID 
+DATABRICKS_CLIENT_ID & DATABRICKS_CLIENT_SECRET: From the Service Principal you created in the Databricks console
+DATABRICKS_CLIENT_SECRET: From the same Service Prinicpal — secret is visible once at creation; store in .env_2 ideally
+AWS_ACCOUNT_ID: Ask the infra team or retrieve via aws sts get-caller-identity
+AWS_ACCESS_KEY_ID & AWS_SECRET_ACCESS_KEY: From an AWS IAM user or programmatic access setup (if not using SSO)
 ```
 4. Edit the terrraform.tfvars file, insert your name where it says 'yourname' and leave the rest:
 ```bash
