@@ -35,7 +35,7 @@ resource "databricks_mws_workspaces" "workspace" {
   storage_configuration_id = databricks_mws_storage_configurations.this.storage_configuration_id
   network_id               = databricks_mws_networks.this.network_id
 
-  pricing_tier         = "STANDARD" # or omit entirely for default
+  pricing_tier         = var.workspace_sku # or omit entirely for default
 
   depends_on = [databricks_mws_networks.this]
 }

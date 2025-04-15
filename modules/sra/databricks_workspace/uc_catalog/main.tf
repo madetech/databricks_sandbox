@@ -113,7 +113,7 @@ resource "aws_s3_bucket" "unity_catalog_bucket" {
 resource "aws_s3_bucket_versioning" "unity_catalog_versioning" {
   bucket = aws_s3_bucket.unity_catalog_bucket.id
   versioning_configuration {
-    status = "Disabled"
+    status = "Enabled"
   }
 }
 
