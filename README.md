@@ -46,7 +46,44 @@ This project provides a modular set of Terraform templates to deploy **Databrick
 └── README.md
 ```
 ---
- ## 6. Getting started
+## 6. Deploy You Databricks Sandbox
+This project uses GitHub Actions to automate provisioning of Databricks sandboxes in AWS using Terraform. All secrets are inserted securely via GitHub Secrets, and deployments are triggered through Pull Requests
+1. Create a new branch:
+```bash
+git checkout -b feat/initials_sandbox e.g. feat/za_sandbox
+```
+2. Copy the base environment folder
+```
+cp -r environments/dev environments/
+```
+3. Edit your terraform.tfvars:
+```bash
+resource_prefix       = "sandbox-<yourname>"
+metastore_exists      = false #first time false, change to true after UC is created once
+```
+4. To set up personal secrets (locally), copy the example file
+```bash
+cp .env.example .env
+```
+5. Fill in your actual AWS and Databricks credentials:
+```bash
+TF_VAR_client_id=your-databricks-client-id
+TF_VAR_client_secret=your-databricks-client-secret
+TF_VAR_databricks_account_id=your-databricks-account-id
+TF_VAR_aws_account_id=your-aws-account-id
+TF_VAR_admin_user=your.email@madetech.com
+AWS_ACCESS_KEY_ID=your-aws-access-key
+AWS_SECRET_ACCESS_KEY=your-aws-secret-key
+```
+6.Load them into your terminal:
+```bash
+source .env
+```
+7. git add .
+git commit -m
+git push feat
+
+## 7. Getting started
 
 1. Clone the repo above as usual and
 ```bash
