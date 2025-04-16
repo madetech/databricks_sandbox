@@ -54,9 +54,9 @@ git checkout -b feat/initials_sandbox e.g. feat/za_sandbox
 ```
 2. Copy the base environment folder
 ```
-cp -r environments/dev environments/
+cp -r environments/dev environments/<yourname>
 ```
-3. Edit your terraform.tfvars:
+3. Edit part of your terraform.tfvars:
 ```bash
 resource_prefix       = "sandbox-<yourname>"
 metastore_exists      = false #first time false, change to true after UC is created once
@@ -65,23 +65,33 @@ metastore_exists      = false #first time false, change to true after UC is crea
 ```bash
 cp .env.example .env
 ```
-5. Fill in your actual AWS and Databricks credentials:
+5. Fill in your actual Databricks credentials:
 ```bash
 TF_VAR_client_id=your-databricks-client-id
 TF_VAR_client_secret=your-databricks-client-secret
 TF_VAR_databricks_account_id=your-databricks-account-id
-TF_VAR_aws_account_id=your-aws-account-id
 TF_VAR_admin_user=your.email@madetech.com
-AWS_ACCESS_KEY_ID=your-aws-access-key
-AWS_SECRET_ACCESS_KEY=your-aws-secret-key
 ```
 6.Load them into your terminal:
 ```bash
 source .env
 ```
-7. git add .
-git commit -m
-git push feat
+7. Commit and push. Make sure the .env file is in .gitignore.
+```bash
+git add environments/<yourname>
+git commit -m "Add sandbox for <yourname>"
+git push --set-upstream origin feature/<initials>_sandbox
+```
+# What happens automatically:
+1. Engineer opens a pull request to main
+2. GitHub Actions detects changes in environments/**
+3. The deploy.yml workflow runs:
+* Injects shared AWS + Databricks secrets
+* Runs terraform init, plan, and apply
+4. The sandbox is provisioned using:
+* Terraform module (sra)
+* Correct network, cluster, and UC setup
+5. You can see logs live in the PR → Actions tab
 
 ## 7. Getting started
 
