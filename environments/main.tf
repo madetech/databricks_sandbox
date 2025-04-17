@@ -20,7 +20,7 @@ module "sra" {
   admin_user            = var.admin_user
   client_id             = var.client_id
   client_secret         = var.client_secret
-  metastore_exists      = true #tells module to create a new Unity Catalog metastore. this value needs to be manually switched later
+  metastore_exists      = true #tells module to  create a new Unity Catalog metastore. this value needs to be manually switched later
 
   network_configuration             = "isolated"
   vpc_cidr_range                    = "10.0.0.0/16"
