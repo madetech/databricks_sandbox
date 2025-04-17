@@ -9,7 +9,6 @@ terraform.tfvars
 .DS_Store
 
 .env_2
-.env_*
 .env
 *.tfvars
 *.tfplan

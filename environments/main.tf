@@ -4,7 +4,7 @@
 // It wires in the inputs and is where we run `terraform init/plan/apply`
 // ------------------------------------------
 module "sra" {
-  source = "../../modules/sra"
+  source = "../modules/sra"
 
   providers = {
     aws            = aws
