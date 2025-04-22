@@ -57,7 +57,7 @@ variable "security_group_ids" {
 variable "subnet_ids" {
   description = "List of private subnet IDs"
   type        = list(string)
-  default     = null
+  default     = []
 }
 
 variable "vpc_id" {

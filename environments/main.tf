@@ -27,6 +27,7 @@ module "sra" {
   private_subnets_cidr              = ["10.0.10.0/24"]
   public_subnets_cidr               = ["10.0.20.0/24"]
   privatelink_subnets_cidr          = ["10.0.30.0/24"]
+  subnet_ids                        = ['subnet']
   availability_zones                = ["eu-west-2a"]
   sg_egress_ports                   = ["443", "2443", "6666", "8443", "8451"]
   region_bucket_name                = "sandbox-bucket-${var.region}"
