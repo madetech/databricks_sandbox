@@ -9,9 +9,9 @@ on:
     workflow_dispatch:
         inputs:
             env_folder:
-                description: 'Environment folder to deploy (e.g., environments/zeerak)'
+                description: 'Environment folder to deploy (e.g., environments)'
                 required: true
-                default: 'environments/zeerak'
+                default: 'environments'
 
 jobs:
     deploy:
@@ -24,7 +24,7 @@ jobs:
 
         defaults:
             run:
-                working-directory: ${{ github.event.inputs.env_folder }}
+                working-directory: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.env_folder || 'environments' }}
 
         steps:
           - name: Checkout repo
