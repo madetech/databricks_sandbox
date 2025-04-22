@@ -24,6 +24,9 @@ jobs:
             TF_VAR_client_secret: ${{ secrets.CLIENT_SECRET }}
             TF_VAR_aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
             TF_VAR_databricks_account_id: ${{ secrets.DATABRICKS_ACCOUNT_ID }}
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
 
         defaults:
             run:
@@ -40,6 +43,13 @@ jobs:
 
           - name: Terraform Init
             run: terraform init
+
+          - name: Debug env vars
+            run: |
+              echo "TF_VAR_admin_user: $TF_VAR_admin_user"
+              echo "TF_VAR_client_id: $TF_VAR_client_id"
+              echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
+
 
           - name: Terraform Plan
             run: terraform plan -out=tfplan
