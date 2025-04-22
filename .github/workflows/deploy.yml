@@ -11,7 +11,7 @@ on:
             env_folder:
                 description: 'Environment folder to deploy (e.g., environments/zeerak)'
                 required: true
-                default: 'environments/zeerak'
+                default: 'environments'
 
 jobs:
     deploy:
