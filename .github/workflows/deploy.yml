@@ -27,7 +27,7 @@ jobs:
 
         defaults:
             run:
-                working-directory: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.env_folder || 'environments/zeerak' }}
+                working-directory: ${{ github.event.inputs.env_folder }}
 
         steps:
           - name: Checkout repo
