@@ -17,20 +17,12 @@ resource "databricks_mws_storage_configurations" "this" {
   storage_configuration_name = "${var.resource_prefix}-storage"
 }
 
-locals {
-  duplicated_subnet_ids = (
-    can(var.subnet_ids[1])
-    ? var.subnet_ids
-    : can(var.subnet_ids[0]) ? [var.subnet_ids[0], var.subnet_ids[0]] : []
-  )
-}
-
 resource "databricks_mws_networks" "this" {
   account_id         = var.databricks_account_id
   network_name       = "${var.resource_prefix}-network"
   security_group_ids = var.security_group_ids
   vpc_id             = var.vpc_id
-  subnet_ids         = [var.subnet_ids[0]]
+  subnet_ids         = var.subnet_ids
 }
 resource "databricks_mws_workspaces" "workspace" {
   account_id           = var.databricks_account_id
