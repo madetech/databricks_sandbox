@@ -34,10 +34,10 @@ variable "managed_storage_key" {
   type        = string
 }
 
-variable "managed_storage_key_alias" {
-  description = "CMK for managed storage alias."
-  type        = string
-}
+# variable "managed_storage_key_alias" {
+#   description = "CMK for managed storage alias."
+#   type        = string
+# }
 
 variable "region" {
   description = "AWS region code."

@@ -43,7 +43,7 @@ module "databricks_mws_workspace" {
   backend_relay               = var.custom_relay_vpce_id != null ? var.custom_relay_vpce_id : aws_vpc_endpoint.backend_relay[0].id
   managed_storage_key         = aws_kms_key.managed_storage.arn
   workspace_storage_key       = aws_kms_key.workspace_storage.arn
-  managed_storage_key_alias   = aws_kms_alias.managed_storage_key_alias.name
+  # managed_storage_key_alias   = aws_kms_alias.managed_storage_key_alias.name
   # workspace_storage_key_alias = aws_kms_alias.workspace_storage_key_alias.name
   deployment_name             = var.deployment_name
   workspace_sku     = var.workspace_sku
