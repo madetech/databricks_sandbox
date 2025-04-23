@@ -13,6 +13,32 @@ resource "aws_iam_role" "cross_account_role" {
     Project = var.resource_prefix
   }
 }
+resource "aws_iam_role_policy" "describe_validation" {
+  name = "${var.resource_prefix}-describe-validation"
+  role = aws_iam_role.cross_account_role.name
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "DatabricksDescribePermissions",
+        Effect = "Allow",
+        Action = [
+          "ec2:DescribeAvailabilityZones",
+          "ec2:DescribeInstances",
+          "ec2:DescribeInstanceStatus",
+          "ec2:DescribeRouteTables",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeVolumes",
+          "ec2:DescribeVpcs"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
 
 resource "aws_iam_role_policy" "cross_account" {
   name = "${var.resource_prefix}-crossaccount-policy"

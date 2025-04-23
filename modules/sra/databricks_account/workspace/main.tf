@@ -36,5 +36,7 @@ resource "databricks_mws_workspaces" "workspace" {
 
   pricing_tier         = var.workspace_sku # or omit entirely for default
 
-  depends_on = [databricks_mws_networks.this]
+  depends_on = [databricks_mws_networks.this,
+                aws_iam_role_policy.cross_account,
+                aws_iam_role_policy.describe_validation]
 }
