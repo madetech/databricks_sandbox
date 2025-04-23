@@ -24,7 +24,7 @@ terraform {
   }
 }
 
-#This block is required to authenticate and deploy AWS resources, and profile refers to AWS CLI profile
+#This block is required to  authenticate and deploy AWS resources, and profile refers to AWS CLI profile
 provider "aws" {
   region                      = var.region
   skip_credentials_validation = false
