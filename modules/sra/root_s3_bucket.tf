@@ -25,7 +25,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "root_storage_buck
       kms_master_key_id = aws_kms_key.workspace_storage.arn
     }
   }
-  depends_on = [aws_kms_alias.workspace_storage_key_alias]
+  # depends_on = [aws_kms_alias.workspace_storage_key_alias]
 }
 
 resource "aws_s3_bucket_public_access_block" "root_storage_bucket" {

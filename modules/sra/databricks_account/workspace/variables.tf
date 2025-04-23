@@ -70,10 +70,10 @@ variable "workspace_storage_key" {
   type        = string
 }
 
-variable "workspace_storage_key_alias" {
-  description = "CMK for workspace storage alias."
-  type        = string
-}
+# variable "workspace_storage_key_alias" {
+#   description = "CMK for workspace storage alias."
+#   type        = string
+# }
 
 
  variable "workspace_sku" {
