@@ -41,12 +41,12 @@ jobs:
             with:
                 terraform_version: 1.6.6
 
+          - name: Terraform Init
+            run: terraform init
+
           - name: Terraform Destroy (on PRs to main)
             if: github.event_name == 'pull_request'
             run: terraform destroy -auto-approve || true
-
-          - name: Terraform Init
-            run: terraform init
 
           - name: Debug env vars
             run: |

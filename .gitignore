@@ -14,5 +14,5 @@ terraform.tfvars
 .env_2
 .env
 *.tfplan
-terraform.tfvars
+environments/terraform.tfvars
 *.tfvars
