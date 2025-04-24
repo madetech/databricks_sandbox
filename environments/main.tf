@@ -30,5 +30,7 @@ module "sra" {
   availability_zones                = ["eu-west-2a", "eu-west-2b"]
   sg_egress_ports                   = ["443", "2443", "6666", "8443", "8451"]
   region_bucket_name                = "sandbox-bucket-${var.region}"
+  managed_storage_key_alias   = aws_kms_alias.managed_storage_key_alias.name
+  workspace_storage_key_alias = aws_kms_alias.workspace_storage_key_alias.name
   log_delivery_mws_credentials_name = "Usage Delivery v3"
 }
