@@ -4,6 +4,9 @@
 .terraform/
 terraform.tfvars
 .terraform.lock.hcl
+**/.terraform/
+**/terraform.tfstate*
+
 
 # OS junk
 .DS_Store

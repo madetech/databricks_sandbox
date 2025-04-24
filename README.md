@@ -106,6 +106,29 @@ This will :
     * Go to Data → Unity Catalog to verify the catalog and schemas
 
 ## If everything looks good, your sandbox is now live.
+------------
+## Destroying the Sandbox (Manual)
+To destroy your sandbox environment locally, especially if you encounter any "already exists" errors during deployment, you have two options:
+1. Manually delete the resources in the AWS Console, or
+2. Run a local Terraform destroy using the steps below.
+
+To destroy locally:
+1. Navigate to Your Environment Folder
+```bash
+cd environments
+```
+2. Run the following commands:
+```bash
+terraform init -reconfigure
+terraform destroy -auto-approve
+```
+This will:
+* Initialize Terraform using the remote S3 backend.
+* Destroy all provisioned resources using your remote state (environments/terraform.tfstate).
+
+3. Cleanup
+> **Note:** Running `terraform destroy -auto-approve` will remove most resources, but you may still see leftovers due to dependency chains or provider quirks. When that happens, you will just have to go digging in AWS and remove dependancies or a series of dependancies manually (they are always listed so its obvious but may require waiting until they shut down).
+
 
 ## Notes for Contributors
 * Do not commit your .env or terraform.tfvars files.
@@ -113,6 +136,24 @@ This will :
 * Format changes using terraform fmt.
 * Follow the standard GitHub PR workflow and use feature branches.
 * Errors may start cropping up at terraform plamn, in which case troubleshooting will be required, read the errors carefully
+
+## Errors
+* NOTE: External location and catalog can be manually imported via:
+```bash
+terraform import \
+  module.sra.module.uc_catalog.databricks_external_location.workspace_catalog_external_location \
+  sandbox-zeerak-catalog-29677xxxxxx-external-location
+
+terraform import \
+  module.sra.module.uc_catalog.databricks_catalog.workspace_catalog \
+  sandbox_zeerak_catalog_29677xxxxxx
+
+Imported existing catalog: sandbox_zeerak_catalog_29677xxxxxx
+Imported external location: sandbox-zeerak-catalog-29677xxxxxx-external-location
+```
+
+
+
 
 ## Known Limitations
 * CloudTrail is not enabled automatically.
