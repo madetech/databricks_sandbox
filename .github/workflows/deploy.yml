@@ -48,9 +48,9 @@ jobs:
             continue-on-error: true
             run: terraform state list
 
-          # - name: Terraform Destroy (on PRs to main)
-          #   i: github.event_name == 'pull_request'
-          #   run: terraform destroy -auto-approve || true
+          - name: Terraform Destroy (on PRs to main)
+            i: github.event_name == 'pull_request'
+            run: terraform destroy -auto-approve || true
 
           - name: Debug env vars
             run: |
@@ -62,9 +62,9 @@ jobs:
             run: terraform plan
             # -out=tfplan
 
-          - name: Terraform Apply (only on PRs to main)
-            if: github.event_name == 'pull_request'
-            run: terraform apply -auto-approve
+          # - name: Terraform Apply (only on PRs to main)
+          #   if: github.event_name == 'pull_request'
+          #   run: terraform apply -auto-approve
             # tfplan
 
           # - name: Upload errored state file (if exists)
