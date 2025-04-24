@@ -54,9 +54,9 @@ jobs:
           - name: Terraform Plan
             run: terraform plan -out=tfplan
 
-          - name: Terraform Destroy (on PRs to main)
-            if: github.event_name == 'pull_request'
-            run: terraform destroy -auto-approve || true
+          # - name: Terraform Destroy (on PRs to main)
+          #   f: github.event_name == 'pull_request'
+          #   run: terraform destroy -auto-approve || true
 
           - name: Terraform Apply (only on PRs to main)
             if: github.event_name == 'pull_request'
