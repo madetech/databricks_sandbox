@@ -58,6 +58,10 @@ jobs:
             if: github.event_name == 'pull_request'
             run: terraform apply -auto-approve tfplan
 
+          - name: Terraform Destroy (clean redeploy)
+            if: github.event_name == 'workflow_dispatch'
+            run: terraform destroy -auto-approve || true
+
           - name: Terraform Apply (manual trigger)
             if: github.event_name == 'workflow_dispatch'
             run: terraform apply -auto-approve tfplan
