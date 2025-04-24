@@ -59,11 +59,13 @@ jobs:
               echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
 
           - name: Terraform Plan
-            run: terraform plan -out=tfplan
+            run: terraform plan
+            # -out=tfplan
 
           - name: Terraform Apply (only on PRs to main)
             if: github.event_name == 'pull_request'
-            run: terraform apply -auto-approve tfplan
+            run: terraform apply -auto-approve
+            # tfplan
 
           # - name: Upload errored state file (if exists)
           #   f: failure()
