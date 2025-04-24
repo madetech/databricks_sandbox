@@ -85,5 +85,5 @@ resource "databricks_mws_log_delivery" "audit_logs" {
   delivery_path_prefix     = "audit-logs"
   config_name              = "Audit Logs"
   log_type                 = "AUDIT_LOGS"
-  output_format            = "JSON"
+  output_format            = "CSV"
 }
