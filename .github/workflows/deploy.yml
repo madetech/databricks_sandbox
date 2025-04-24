@@ -44,9 +44,9 @@ jobs:
           - name: Terraform Init
             run: terraform init
 
-          - name: Terraform Destroy (on PRs to main)
-            if: github.event_name == 'pull_request'
-            run: terraform destroy -auto-approve || true
+          # - name: Terraform Destroy (on PRs to main)
+          #   i: github.event_name == 'pull_request'
+          #   run: terraform destroy -auto-approve || true
 
           - name: Debug env vars
             run: |
