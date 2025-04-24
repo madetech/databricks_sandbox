@@ -26,7 +26,7 @@ jobs:
             TF_VAR_databricks_account_id: ${{ secrets.DATABRICKS_ACCOUNT_ID }}
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
+            TF_VAR_enable_log_delivery: false
 
         defaults:
             run:
