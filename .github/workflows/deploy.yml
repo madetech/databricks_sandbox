@@ -41,6 +41,10 @@ jobs:
             with:
                 terraform_version: 1.6.6
 
+          - name: Terraform Destroy (on PRs to main)
+            if: github.event_name == 'pull_request'
+            run: terraform destroy -auto-approve || true
+
           - name: Terraform Init
             run: terraform init
 
@@ -50,26 +54,21 @@ jobs:
               echo "TF_VAR_client_id: $TF_VAR_client_id"
               echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
 
-
           - name: Terraform Plan
             run: terraform plan
             #-out=tfplan
-
-          # - name: Terraform Destroy (on PRs to main)
-          #   f: github.event_name == 'pull_request'
-          #   run: terraform destroy -auto-approve || true
 
           - name: Terraform Apply (only on PRs to main)
             if: github.event_name == 'pull_request'
             run: terraform apply -auto-approve
             #tfplan
 
-          - name: Upload errored state file (if exists)
-            if: failure()
-            uses: actions/upload-artifact@v2
-            with:
-              name: errored-tfstate
-              path: errored.tfstate
+          # - name: Upload errored state file (if exists)
+          #   f: failure()
+          #   uses: actions/upload-artifact@v2
+          #   with:
+          #     name: errored-tfstate
+          #     path: errored.tfstate
 
           - name: Terraform Apply (manual trigger)
             if: github.event_name == 'workflow_dispatch'
