@@ -64,6 +64,13 @@ jobs:
             run: terraform apply -auto-approve
             #tfplan
 
+          - name: Upload errored state file (if exists)
+            if: failure()
+            uses: actions/upload-artifact@v3
+            with:
+              name: errored-tfstate
+              path: errored.tfstate
+
           - name: Terraform Apply (manual trigger)
             if: github.event_name == 'workflow_dispatch'
             run: terraform apply -auto-approve tfplan
