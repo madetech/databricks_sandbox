@@ -16,12 +16,7 @@ terraform {
       source  = "hashicorp/time"
       version = ">= 0.12.1"
     }
-    }
-      backend "s3" {
-      bucket = "made-tech-databricks-sandbox-tfstate"
-      key    = "dev/terraform.tfstate"
-      region = "eu-west-2"
-  }
+}
 }
 
 #This block is required to  authenticate and deploy AWS resources, and profile refers to AWS CLI profile
