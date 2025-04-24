@@ -44,6 +44,10 @@ jobs:
           - name: Terraform Init
             run: terraform init
 
+          - name: Debug Terraform State List
+            continue-on-error: true
+            run: terraform state list
+
           # - name: Terraform Destroy (on PRs to main)
           #   i: github.event_name == 'pull_request'
           #   run: terraform destroy -auto-approve || true
@@ -53,9 +57,6 @@ jobs:
               echo "TF_VAR_admin_user: $TF_VAR_admin_user"
               echo "TF_VAR_client_id: $TF_VAR_client_id"
               echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
-
-          - name: Show Terraform State
-            run: terraform state list
 
           - name: Terraform Plan
             run: terraform plan -out=tfplan
