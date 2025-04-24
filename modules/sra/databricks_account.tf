@@ -50,7 +50,7 @@ module "databricks_mws_workspace" {
   admin_user = var.admin_user
 }
 
-# User Workspace Assignment (Admin)
+# User Workspace Assignment  (Admin)
 module "user_assignment" {
   source = "./databricks_account/user_assignment"
   providers = {
