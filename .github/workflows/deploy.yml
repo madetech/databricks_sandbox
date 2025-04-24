@@ -16,7 +16,7 @@ on:
 jobs:
     deploy:
         runs-on: ubuntu-latest
-        # environment: ${{ github.event.inputs.env_folder || 'zeerak'  # Picks the env name
+        # environment: ${{ github.event.inputs.env_folder || 'zeerak' # Picks the env name
 
         env:
             TF_VAR_admin_user: ${{ secrets.ADMIN_USER }}
