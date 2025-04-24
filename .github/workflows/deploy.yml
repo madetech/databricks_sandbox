@@ -52,7 +52,8 @@ jobs:
 
 
           - name: Terraform Plan
-            run: terraform plan -out=tfplan
+            run: terraform plan
+            #-out=tfplan
 
           # - name: Terraform Destroy (on PRs to main)
           #   f: github.event_name == 'pull_request'
@@ -60,7 +61,8 @@ jobs:
 
           - name: Terraform Apply (only on PRs to main)
             if: github.event_name == 'pull_request'
-            run: terraform apply -auto-approve tfplan
+            run: terraform apply -auto-approve
+            #tfplan
 
           - name: Terraform Apply (manual trigger)
             if: github.event_name == 'workflow_dispatch'
