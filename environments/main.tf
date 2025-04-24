@@ -34,3 +34,12 @@ module "sra" {
   workspace_storage_key_alias = aws_kms_alias.workspace_storage_key_alias.name
   log_delivery_mws_credentials_name = "Usage Delivery v3"
 }
+
+resource "aws_kms_alias" "managed_storage_key_alias" {
+  name          = "alias/${var.resource_prefix}-managed-storage-key"
+  target_key_id = aws_kms_key.managed_storage.id
+}
+resource "aws_kms_alias" "managed_storage_key_alias" {
+  name          = "alias/${var.resource_prefix}-managed-storage-key"
+  target_key_id = aws_kms_key.managed_storage.id
+}
