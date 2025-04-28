@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       env_folder:
-        description: 'Environment folder to deploy (e.g., environments/zeerak)'
+        description: 'Environment folder to deploy (e.g. environments/zeerak)'
         required: true
         default: 'environments/zeerak'
 
