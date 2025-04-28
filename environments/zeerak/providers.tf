@@ -34,3 +34,21 @@ provider "databricks" {
   client_id     = var.client_id
   client_secret = var.client_secret
 }
+
+# Databricks - **Account-level provider** (for workspace creation, UC metastore, etc.)
+# provider "databricks" {
+#   alias         = "mws"
+#   host          = "https://accounts.cloud.databricks.com"
+#   account_id    = var.databricks_account_id
+#   client_id     = var.client_id
+#   client_secret = var.client_secret
+#   auth_type     = "oauth-m2m"
+# }
+
+# # Databricks - **Workspace-level provider** (for clusters, catalogs inside workspace, etc.)
+# provider "databricks" {
+#   host          = var.databricks_host  # <- workspace URL like https://dbc-xxxx.cloud.databricks.com
+#   client_id     = var.client_id
+#   client_secret = var.client_secret
+#   auth_type     = "oauth-m2m"
+# }
