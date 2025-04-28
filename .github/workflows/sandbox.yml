@@ -44,6 +44,10 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Terraform Plan (for pull_request events)
+        if: github.event_name == 'pull_request'
+        run: terraform plan
+
       - name: Terraform Apply (manual only)
         if: github.event_name == 'workflow_dispatch'
         run: terraform apply -auto-approve
