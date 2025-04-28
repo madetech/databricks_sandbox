@@ -30,13 +30,18 @@ jobs:
         with:
           terraform_version: 1.6.6
 
-      - name: Terraform Init
-        run: terraform init
+      - name: Install Databricks CLI and jq
+        run: |
+          pip install databricks-cli
+          sudo apt-get update && sudo apt-get install -y jq
 
       - name: Run Destroy Script
         run: |
           chmod +x destroy.sh
           ./destroy.sh
+
+      - name: Terraform Init
+        run: terraform init
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
