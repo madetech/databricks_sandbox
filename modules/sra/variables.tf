@@ -205,3 +205,17 @@ variable "public_subnets_cidr" {
   type        = list(string)
   nullable    = true
 }
+variable "subnet_ids" {
+  description = "List of subnet IDs to attach the workspace to. Must include 2 items even if duplicated."
+  type        = list(string)
+  default     =null
+}
+variable "managed_storage_key_alias" {
+  description = "KMS alias for managed storage"
+  type        = string
+}
+
+variable "workspace_storage_key_alias" {
+  description = "KMS alias for workspace root storage"
+  type        = string
+}

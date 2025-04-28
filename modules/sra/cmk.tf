@@ -68,10 +68,13 @@ resource "aws_kms_key" "workspace_storage" {
   }
 }
 
-
 resource "aws_kms_alias" "workspace_storage_key_alias" {
   name          = "alias/${var.resource_prefix}-workspace-storage-key"
   target_key_id = aws_kms_key.workspace_storage.id
+}
+resource "aws_kms_alias" "managed_storage_key_alias" {
+  name          = "alias/${var.resource_prefix}-managed-storage-key"
+  target_key_id = aws_kms_key.managed_storage.id
 }
 
 # CMK for Managed Storage
@@ -115,9 +118,4 @@ resource "aws_kms_key" "managed_storage" {
     Project = var.resource_prefix
     Name    = "${var.resource_prefix}-managed-storage-key"
   }
-}
-
-resource "aws_kms_alias" "managed_storage_key_alias" {
-  name          = "alias/${var.resource_prefix}-managed-storage-key"
-  target_key_id = aws_kms_key.managed_storage.key_id
 }

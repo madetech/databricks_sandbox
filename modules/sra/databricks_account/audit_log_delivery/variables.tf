@@ -13,3 +13,8 @@ variable "log_delivery_mws_credentials_name" {
   description = "Override name for the Databricks MWS credential used for log delivery"
   default     = "Usage Delivery"
 }
+
+variable "enable_log_delivery" {
+  type    = bool
+  default = false
+}

@@ -79,6 +79,7 @@ resource "databricks_mws_storage_configurations" "log_bucket" {
 
 # Log Delivery
 resource "databricks_mws_log_delivery" "audit_logs" {
+  count = var.enable_log_delivery ? 1 : 0
   account_id               = var.databricks_account_id
   credentials_id           = databricks_mws_credentials.log_writer.credentials_id
   storage_configuration_id = databricks_mws_storage_configurations.log_bucket.storage_configuration_id

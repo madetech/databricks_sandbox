@@ -7,7 +7,7 @@ resource "time_sleep" "wait_30_seconds" {
 
 resource "databricks_mws_credentials" "this" {
   role_arn         = var.cross_account_role_arn
-  credentials_name = "${var.resource_prefix}-credentials"
+  credentials_name = "${var.resource_prefix}-credentials-v2"
   depends_on       = [time_sleep.wait_30_seconds]
 }
 
@@ -24,7 +24,6 @@ resource "databricks_mws_networks" "this" {
   vpc_id             = var.vpc_id
   subnet_ids         = var.subnet_ids
 }
-
 resource "databricks_mws_workspaces" "workspace" {
   account_id           = var.databricks_account_id
   aws_region           = var.region

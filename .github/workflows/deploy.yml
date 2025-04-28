@@ -1,0 +1,79 @@
+name: Deploy Databricks sandbox to AWS
+
+on:
+    pull_request:
+        branches:
+            - main
+        paths:
+            - 'environments/**'
+    workflow_dispatch:
+        inputs:
+            env_folder:
+                description: 'Environment folder to deploy (e.g., environments)'
+                required: true
+                default: 'environments'
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        # environment: ${{ github.event.inputs.env_folder  || 'zeerak' # Picks the env name
+
+        env:
+            TF_VAR_admin_user: ${{ secrets.ADMIN_USER }}
+            TF_VAR_client_id: ${{ secrets.CLIENT_ID }}
+            TF_VAR_client_secret: ${{ secrets.CLIENT_SECRET }}
+            TF_VAR_aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+            TF_VAR_databricks_account_id: ${{ secrets.DATABRICKS_ACCOUNT_ID }}
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            TF_VAR_enable_log_delivery: false
+
+        defaults:
+            run:
+                working-directory: ${{ github.event.inputs.env_folder || 'environments' }}
+
+        steps:
+          - name: Checkout repo
+            uses: actions/checkout@v3
+
+          - name: Setup Terraform
+            uses: hashicorp/setup-terraform@v3
+            with:
+                terraform_version: 1.6.6
+
+          - name: Terraform Init
+            run: terraform init
+
+          - name: Debug Terraform State List
+            continue-on-error: true
+            run: terraform state list
+
+          - name: Terraform Destroy (on PRs to main)
+            if: github.event_name == 'pull_request'
+            run: terraform destroy -auto-approve || true
+
+          - name: Debug env vars
+            run: |
+              echo "TF_VAR_admin_user: $TF_VAR_admin_user"
+              echo "TF_VAR_client_id: $TF_VAR_client_id"
+              echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
+
+          - name: Terraform Plan
+            run: terraform plan
+            # -out=tfplan
+
+          # - name: Terraform Apply (only on PRs to main)
+          #   if: github.event_name == 'pull_request'
+          #   run: terraform apply -auto-approve
+            # tfplan
+
+          # - name: Upload errored state file (if exists)
+          #   f: failure()
+          #   uses: actions/upload-artifact@v2
+          #   with:
+          #     name: errored-tfstate
+          #     path: errored.tfstate
+
+          - name: Terraform Apply (manual trigger)
+            if: github.event_name == 'workflow_dispatch'
+            run: terraform apply -auto-approve tfplan

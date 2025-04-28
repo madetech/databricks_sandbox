@@ -4,12 +4,15 @@
 .terraform/
 terraform.tfvars
 .terraform.lock.hcl
+**/.terraform/
+**/terraform.tfstate*
+
 
 # OS junk
 .DS_Store
 
 .env_2
-.env_*
 .env
-*.tfvars
 *.tfplan
+environments/terraform.tfvars
+*.tfvars
