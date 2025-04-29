@@ -6,7 +6,7 @@ on:
       env_folder:
         description: 'Environment folder to destroy (e.g., environments/zeerak)'
         required: true
-        default: 'environments/zeerak'
+        default: 'environments/bob'
 
 jobs:
   destroy:
