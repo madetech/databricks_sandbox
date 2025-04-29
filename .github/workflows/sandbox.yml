@@ -49,7 +49,7 @@ jobs:
 
         - run: aws sts get-caller-identity
         - run: aws ec2 describe-availability-zones --region eu-west-2
-            export AWS_REGION=eu-west-2
+        - run: export AWS_REGION=eu-west-2
 
 
         - name: Terraform Plan (for pull_request events)
