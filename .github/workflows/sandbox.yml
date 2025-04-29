@@ -47,10 +47,12 @@ jobs:
         - name: Terraform Init
           run: terraform init
 
-        - run: aws sts get-caller-identity
-        - run: aws ec2 describe-availability-zones --region eu-west-2
-        - run: export AWS_REGION=eu-west-2
+        # - run: aws sts get-caller-identity
+        # - run: aws ec2 describe-availability-zones --region eu-west-2
+        # - run: export AWS_REGION=eu-west-2
 
+        - run: terraform providers
+        - run: terraform plan -debug
 
         - name: Terraform Plan (for pull_request events)
           if: github.event_name == 'pull_request'
