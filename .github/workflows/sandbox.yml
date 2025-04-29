@@ -3,7 +3,7 @@ name: deploying a sandbox for engineer Bob
 on:
     pull_request:
       branches:
-        - sandbox/**
+        - 'sandbox/**'
       paths:
         - 'environments/**'
     workflow_dispatch:
