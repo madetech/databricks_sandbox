@@ -18,7 +18,7 @@ jobs:
     deploy:
       runs-on: ubuntu-latest
       environment: bob
-    #   environment: github.event.inputs.env_folder && fromJson(format('{{"name":"{0}"}}', github.event.inputs.env_folder.split('/')[1])).name || 'bob-test' }}
+    #  environment: github.event.inputs.env_folder && fromJson(format('{{"name":"{0}"}}', github.event.inputs.env_folder.split('/')[1])).name || 'bob-test' }}
 
       env:
         TF_VAR_admin_user: ${{ secrets.ADMIN_USER }}
