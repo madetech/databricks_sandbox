@@ -3,7 +3,7 @@ name: deploying a sandbox for engineer Bob
 on:
     pull_request:
       branches:
-        - main
+        - sandbox/**
       paths:
         - 'environments/**'
     workflow_dispatch:
@@ -50,12 +50,10 @@ jobs:
         # - run: aws sts get-caller-identity
         # - run: aws ec2 describe-availability-zones --region eu-west-2
         # - run: export AWS_REGION=eu-west-2
-
-        - run: terraform providers
-        - run: terraform plan
-          env:
-            TF_LOG: DEBUG
-
+        # - run: terraform providers
+        # - run: terraform plan
+        #   env:
+        #     TF_LOG: DEBUG
 
         - name: Terraform Plan (for pull_request events)
           if: github.event_name == 'pull_request'
