@@ -210,12 +210,12 @@ variable "subnet_ids" {
   type        = list(string)
   default     =null
 }
-variable "managed_storage_key_alias" {
-  description = "KMS alias for managed storage"
-  type        = string
+variable "workspace_storage_key_alias" {
+  type    = string
+  default = "alias/${var.resource_prefix}-workspace-storage-key"
 }
 
-variable "workspace_storage_key_alias" {
-  description = "KMS alias for workspace root storage"
-  type        = string
+variable "managed_storage_key_alias" {
+  type    = string
+  default = "alias/${var.resource_prefix}-managed-storage-key"
 }
