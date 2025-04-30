@@ -40,11 +40,11 @@ jobs:
         run: terraform init
 
       #Comment out terraform plan and apply if destroying sandbox:
-      - name: Terraform Plan
-        run: terraform plan
+      # - name: Terraform Plan
+      #   run: terraform plan
 
-      - name: Terraform Apply
-        run: terraform apply  -auto-approve
+      # - name: Terraform Apply
+      #   run: terraform apply  -auto-approve
 
       - name: Terraform Destroy
         # Destroy works successfully when PR title has 'destroy' in it
