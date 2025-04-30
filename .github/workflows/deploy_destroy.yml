@@ -1,0 +1,69 @@
+name: Deploy or Destroy Databricks Sandbox for Engineer Bob
+
+on:
+  pull_request:
+    branches:
+      - main
+      - "sandbox/**"
+    paths:
+      - 'environments/**'
+
+jobs:
+  deploy_or_destroy:
+    runs-on: ubuntu-latest
+    environment: bob
+
+    env:
+      TF_VAR_admin_user: ${{ secrets.ADMIN_USER }}
+      TF_VAR_client_id: ${{ secrets.CLIENT_ID }}
+      TF_VAR_client_secret: ${{ secrets.CLIENT_SECRET }}
+      TF_VAR_aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+      TF_VAR_databricks_account_id: ${{ secrets.DATABRICKS_ACCOUNT_ID }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      TF_VAR_enable_log_delivery: false
+
+    defaults:
+      run:
+        working-directory: environments/bob
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: Install Databricks CLI and jq
+        if: contains(github.event.pull_request.labels.*.name, 'destroy')
+        run: |
+          pip install databricks-cli
+          sudo apt-get update && sudo apt-get install -y jq
+        working-directory: .
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        if: ${{ !contains(join(',', github.event.pull_request.labels.*.name), 'destroy') }}
+        run: terraform plan
+
+      - name: Terraform Apply
+        if: ${{ !contains(join(',', github.event.pull_request.labels.*.name), 'destroy') }}
+        run: terraform apply -auto-approve
+
+      - name: Install Databricks CLI and jq
+        if: ${{ contains(join(',', github.event.pull_request.labels.*.name), 'destroy') }}
+        run: |
+          pip install databricks-cli
+          sudo apt-get update && sudo apt-get install -y jq
+        working-directory: .
+
+      - name: Run destroy.sh and Terraform Destroy
+        if: ${{ contains(join(',', github.event.pull_request.labels.*.name), 'destroy') }}
+        run: |
+          chmod +x destroy.sh
+          ./destroy.sh
+          terraform destroy -auto-approve
