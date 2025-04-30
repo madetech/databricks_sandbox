@@ -8,7 +8,7 @@ module "sra" {
 
   providers = {
     aws            = aws
-    databricks.mws = databricks.mws
+    databricks = databricks.mws
   }
 
   region          = var.region
