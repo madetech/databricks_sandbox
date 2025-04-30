@@ -47,5 +47,4 @@ jobs:
 
       - name: Terraform Destroy
         if: contains(join(',', github.event.pull_request.labels.*.name), 'destroy')
-        run:
-          terraform destroy -auto-approve
+        run: terraform destroy -auto-approve
