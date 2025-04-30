@@ -39,13 +39,13 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Plan
-        run: terraform plan
+      # - name: Terraform Plan
+      #   run: terraform plan
 
       # - name: Terraform Apply
       #   run: terraform apply -auto-approve
 
-      - name: Run destroy.sh and Terraform Destroy
-        if: ${{ contains(join(',', github.event.pull_request.labels.*.name), 'destroy') }}
+      - name: Terraform Destroy
+        if: contains(join(',', github.event.pull_request.labels.*.name), 'destroy')
         run:
           terraform destroy -auto-approve
