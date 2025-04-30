@@ -110,6 +110,7 @@ This will :
 ## Destroying the Sandbox (via PR title)
 
 To destroy your sandbox we have to use CI/CD:
+* Comment out terraform plan and apply if destroying sandbox in .github/workflows/deploy_destroy.yml
 * Open a new PR and include destroy in the PR title (e.g., destroy sandbox for bob)
 
 The workflow will:

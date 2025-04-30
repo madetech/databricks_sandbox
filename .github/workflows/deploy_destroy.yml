@@ -39,6 +39,7 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      #Comment out terraform plan and apply if destroying sandbox:
       - name: Terraform Plan
         run: terraform plan
 
