@@ -40,21 +40,12 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        if: ${{ !contains(join(',', github.event.pull_request.labels.*.name), 'destroy') }}
         run: terraform plan
 
-
-
-      - name: Install Databricks CLI and jq
-        if: ${{ contains(join(',', github.event.pull_request.labels.*.name), 'destroy') }}
-        run: |
-          pip install databricks-cli
-          sudo apt-get update && sudo apt-get install -y jq
-        working-directory: .
+      # - name: Terraform Apply
+      #   run: terraform apply -auto-approve
 
       - name: Run destroy.sh and Terraform Destroy
         if: ${{ contains(join(',', github.event.pull_request.labels.*.name), 'destroy') }}
-        run: |
-          chmod +x destroy.sh
-          ./destroy.sh
+        run:
           terraform destroy -auto-approve
