@@ -39,12 +39,13 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      # - name: Terraform Plan
-      #   run: terraform plan
+      - name: Terraform Plan
+        run: terraform plan
 
-      # - name: Terraform Apply
-      #   run: terraform apply  -auto-approve
+      - name: Terraform Apply
+        run: terraform apply  -auto-approve
 
       - name: Terraform Destroy
+        # Destroy works successfully when PR title has 'destroy' in it
         if: contains(github.event.pull_request.title, 'destroy')
         run: terraform destroy -auto-approve

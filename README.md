@@ -107,24 +107,29 @@ This will :
 
 ## If everything looks good, your sandbox is now live.
 ------------
-## Destroying the Sandbox (Manual)
-To destroy your sandbox environment locally, especially if you encounter any "already exists" errors during deployment, you have two options:
-1. Manually delete the resources in the AWS Console, or
-2. Run a local Terraform destroy using the steps below.
+## Destroying the Sandbox (via PR title)
 
-To destroy locally:
-1. Navigate to Your Environment Folder
+To destroy your sandbox we have to use CI/CD:
+* Open a new PR and include destroy in the PR title (e.g., destroy sandbox for bob)
+
+The workflow will:
+  * Run terraform destroy -auto-approve
+  * Tear down all associated resources automatically
+
+Alternatively, to destroy locally:
 ```bash
 cd environments
-```
-2. Run the following commands:
-```bash
 terraform init -reconfigure
 terraform destroy -auto-approve
 ```
-This will:
-* Initialize Terraform using the remote S3 backend.
-* Destroy all provisioned resources using your remote state (environments/terraform.tfstate).
+> **Note:** Leftovers may need manual cleanup in AWS (due to dependencies). You may notice that schemas, tables or views may persist if something was run in the databricks workspace. You will need to manually drop these via databricks UI. To fully clean up enter databricks SQL:
+```bash
+-- Example in Databricks SQL
+DROP SCHEMA <schema_name> CASCADE;
+DROP CATALOG <catalog_name> CASCADE;
+```
+* External locations and storage credentials may also require manual deletion in the Databricks UI.
+* You may see errors if these objects still exist when re-deploying.
 
 3. Cleanup
 > **Note:** Running `terraform destroy -auto-approve` will remove most resources, but you may still see leftovers due to dependency chains or provider quirks. When that happens, you will just have to go digging in AWS and remove dependancies or a series of dependancies manually (they are always listed so its obvious but may require waiting until they shut down).
@@ -151,8 +156,6 @@ terraform import \
 Imported existing catalog: sandbox_zeerak_catalog_29677xxxxxx
 Imported external location: sandbox-zeerak-catalog-29677xxxxxx-external-location
 ```
-
-
 
 
 ## Known Limitations
