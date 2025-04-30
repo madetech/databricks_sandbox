@@ -1,7 +1,7 @@
 name: Deploy or Destroy a sandbox for engineer bob
 
 on:
-  pull_request_target:
+  pull_request:
     branches:
       - main
       - "sandbox/**"
