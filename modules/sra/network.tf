@@ -25,8 +25,13 @@ module "vpc" {
   intra_subnet_names = [for az in var.availability_zones : format("%s-privatelink-%s", var.resource_prefix, az)]
   intra_subnets      = var.privatelink_subnets_cidr
 
-  depends_on = [
-    aws_nat_gateway.nat]
+  # Disable features that cause dependency cycles if unused
+  manage_default_route_table = false
+  enable_vpn_gateway         = false
+  enable_dhcp_options        = false
+  enable_flow_log            = false
+
+  depends_on = [aws_nat_gateway.nat]
 
   tags = {
     Project = var.resource_prefix
