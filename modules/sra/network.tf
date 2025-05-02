@@ -25,6 +25,9 @@ module "vpc" {
   intra_subnet_names = [for az in var.availability_zones : format("%s-privatelink-%s", var.resource_prefix, az)]
   intra_subnets      = var.privatelink_subnets_cidr
 
+  depends_on = [
+    aws_nat_gateway.nat]
+
   tags = {
     Project = var.resource_prefix
   }
@@ -43,7 +46,11 @@ resource "aws_nat_gateway" "nat" {
   count         = var.network_configuration != "custom" ? 1 : 0
   allocation_id = aws_eip.nat[0].id
   subnet_id     = module.vpc[0].public_subnets[0] # Assumes VPC module includes public_subnets output
-  depends_on    = [module.vpc]
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  depends_on    = [module.vpc,aws_eip.nat]
   tags = {
     Name = "${var.resource_prefix}-nat-gateway"
   }
