@@ -32,19 +32,23 @@ module "vpc" {
   enable_flow_log            = false
 
   # depends_on = [aws_nat_gateway.nat]
+   # Wait for NAT GW to clean up before deleting subnets
+  depends_on = [time_sleep.wait_for_nat_cleanup]
+
 
   tags = {
     Project = var.resource_prefix
   }
 }
 
-#NAT Gateway setup for bootstrap access from private subnets
+#Elastic IP for NAT Gateway
 resource "aws_eip" "nat" {
   count = var.network_configuration != "custom" ? 1 : 0
   domain = "vpc"
   depends_on = [module.vpc]
 }
 
+#NAT Gateway setup for bootstrap access from private subnets
 resource "aws_nat_gateway" "nat" {
   count         = var.network_configuration != "custom" ? 1 : 0
   allocation_id = aws_eip.nat[0].id
@@ -59,6 +63,7 @@ resource "aws_nat_gateway" "nat" {
   }
 }
 
+# Sleep timer to ensure NAT Gateway is fully deleted before subnet removal
 resource "time_sleep" "wait_for_nat_cleanup" {
   count          = var.network_configuration != "custom" ? 1 : 0
   create_duration = "90s"
