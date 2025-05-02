@@ -31,8 +31,6 @@ module "vpc" {
   enable_dhcp_options        = false
   enable_flow_log            = false
 
-  depends_on = [aws_nat_gateway.nat]
-
   tags = {
     Project = var.resource_prefix
   }
