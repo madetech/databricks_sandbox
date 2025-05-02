@@ -31,6 +31,9 @@ module "vpc" {
   enable_dhcp_options        = false
   enable_flow_log            = false
 
+  #depends_on = [aws_nat_gateway.nat]
+  depends_on = [time_sleep.wait_for_nat_cleanup]
+
   tags = {
     Project = var.resource_prefix
   }
@@ -58,6 +61,14 @@ resource "aws_nat_gateway" "nat" {
     Name = "${var.resource_prefix}-nat-gateway"
   }
 }
+
+resource "time_sleep" "wait_for_nat_cleanup" {
+  count          = var.network_configuration != "custom" ? 1 : 0
+  create_duration = "90s"
+  depends_on     = [aws_nat_gateway.nat]
+}
+
+
 # resource "aws_route" "private_subnet_nat" {
 #   count = var.network_configuration != "custom" && var.enable_nat ? length(module.vpc[0].private_route_table_ids) : 0
 
