@@ -11,9 +11,9 @@ module "vpc" {
   azs  = var.availability_zones
 
   enable_dns_hostnames   = true
-  enable_nat_gateway     = var.enable_nat
+  enable_nat_gateway     = true
   single_nat_gateway     = true
-  one_nat_gateway_per_az = var.enable_nat
+  one_nat_gateway_per_az = false
   create_igw             = var.enable_nat
 
   public_subnet_names = [for az in var.availability_zones : format("%s-public-%s", var.resource_prefix, az)]
@@ -39,28 +39,27 @@ module "vpc" {
   }
 }
 
-
 # NAT Gateway setup for bootstrap access from private subnets
-resource "aws_eip" "nat" {
-  count = var.network_configuration != "custom" ? 1 : 0
-  domain = "vpc"
-  depends_on = [module.vpc]
+# resource "aws_eip" "nat" {
+#   count = var.network_configuration != "custom" ? 1 : 0
+#   domain = "vpc"
+#   depends_on = [module.vpc]
 
-}
+# }
 
-resource "aws_nat_gateway" "nat" {
-  count         = var.network_configuration != "custom" ? 1 : 0
-  allocation_id = aws_eip.nat[0].id
-  subnet_id     = module.vpc[0].public_subnets[0] # Assumes VPC module includes public_subnets output
-  lifecycle {
-    create_before_destroy = true
-  }
+# resource "aws_nat_gateway" "nat" {
+#   count         = var.network_configuration != "custom" ? 1 : 0
+#   allocation_id = aws_eip.nat[0].id
+#   subnet_id     = module.vpc[0].public_subnets[0] # Assumes VPC module includes public_subnets output
+#   lifecycle {
+#     create_before_destroy = true
+#   }
 
-  depends_on    = [module.vpc,aws_eip.nat]
-  tags = {
-    Name = "${var.resource_prefix}-nat-gateway"
-  }
-}
+#   depends_on    = [module.vpc,aws_eip.nat]
+#   tags = {
+#     Name = "${var.resource_prefix}-nat-gateway"
+#   }
+# }
 
 resource "time_sleep" "wait_for_nat_cleanup" {
   count          = var.network_configuration != "custom" ? 1 : 0
