@@ -38,13 +38,12 @@ module "vpc" {
   }
 }
 
-# NAT Gateway setup for bootstrap access from private subnets
-# resource "aws_eip" "nat" {
-#   count = var.network_configuration != "custom" ? 1 : 0
-#   domain = "vpc"
-#   depends_on = [module.vpc]
-
-# }
+#NAT Gateway setup for bootstrap access from private subnets
+resource "aws_eip" "nat" {
+  count = var.network_configuration != "custom" ? 1 : 0
+  domain = "vpc"
+  depends_on = [module.vpc]
+}
 
 resource "aws_nat_gateway" "nat" {
   count         = var.network_configuration != "custom" ? 1 : 0
