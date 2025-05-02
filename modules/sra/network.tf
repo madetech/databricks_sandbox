@@ -32,8 +32,8 @@ module "vpc" {
   enable_flow_log            = false
 
   # depends_on = [aws_nat_gateway.nat]
-   # Wait for NAT GW to clean up before deleting subnets
-  depends_on = [time_sleep.wait_for_nat_cleanup]
+  # Wait for NAT GW to clean up before deleting subnets
+  # depends_on = [time_sleep.wait_for_nat_cleanup]
 
 
   tags = {
@@ -45,7 +45,7 @@ module "vpc" {
 resource "aws_eip" "nat" {
   count = var.network_configuration != "custom" ? 1 : 0
   domain = "vpc"
-  depends_on = [module.vpc]
+  # depends_on = [module.vpc]
 }
 
 #NAT Gateway setup for bootstrap access from private subnets
@@ -57,7 +57,7 @@ resource "aws_nat_gateway" "nat" {
     create_before_destroy = true
   }
 
-  depends_on    = [module.vpc,aws_eip.nat]
+  depends_on    = [aws_eip.nat]
   tags = {
     Name = "${var.resource_prefix}-nat-gateway"
   }
@@ -70,6 +70,11 @@ resource "time_sleep" "wait_for_nat_cleanup" {
   depends_on     = [aws_nat_gateway.nat]
 }
 
+# Dummy null_resource to enforce wait before subnet destroy
+resource "null_resource" "nat_teardown_buffer" {
+  count      = var.network_configuration != "custom" ? 1 : 0
+  depends_on = [time_sleep.wait_for_nat_cleanup]
+}
 
 # resource "aws_route" "private_subnet_nat" {
 #   count = var.network_configuration != "custom" && var.enable_nat ? length(module.vpc[0].private_route_table_ids) : 0
