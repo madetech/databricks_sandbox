@@ -31,8 +31,7 @@ module "vpc" {
   enable_dhcp_options        = false
   enable_flow_log            = false
 
-  #depends_on = [aws_nat_gateway.nat]
-  depends_on = [time_sleep.wait_for_nat_cleanup]
+  # depends_on = [aws_nat_gateway.nat]
 
   tags = {
     Project = var.resource_prefix
@@ -47,19 +46,19 @@ module "vpc" {
 
 # }
 
-# resource "aws_nat_gateway" "nat" {
-#   count         = var.network_configuration != "custom" ? 1 : 0
-#   allocation_id = aws_eip.nat[0].id
-#   subnet_id     = module.vpc[0].public_subnets[0] # Assumes VPC module includes public_subnets output
-#   lifecycle {
-#     create_before_destroy = true
-#   }
+resource "aws_nat_gateway" "nat" {
+  count         = var.network_configuration != "custom" ? 1 : 0
+  allocation_id = aws_eip.nat[0].id
+  subnet_id     = module.vpc[0].public_subnets[0] # Assumes VPC module includes public_subnets output
+  lifecycle {
+    create_before_destroy = true
+  }
 
-#   depends_on    = [module.vpc,aws_eip.nat]
-#   tags = {
-#     Name = "${var.resource_prefix}-nat-gateway"
-#   }
-# }
+  depends_on    = [module.vpc,aws_eip.nat]
+  tags = {
+    Name = "${var.resource_prefix}-nat-gateway"
+  }
+}
 
 resource "time_sleep" "wait_for_nat_cleanup" {
   count          = var.network_configuration != "custom" ? 1 : 0
