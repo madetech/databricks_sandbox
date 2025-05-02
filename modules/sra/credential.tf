@@ -47,6 +47,18 @@ resource "aws_iam_role_policy" "cross_account" {
     "Version": "2012-10-17",
     "Statement": [
       {
+        "Sid": "AllowNATAndNetworkCleanup",
+        "Effect": "Allow",
+        "Action": [
+          "ec2:DeleteNatGateway",
+          "ec2:ReleaseAddress",
+          "ec2:DisassociateAddress",
+          "ec2:DeleteNetworkInterface",
+          "ec2:DeleteSubnet"
+        ],
+        "Resource": "*"
+      },
+      {
         "Sid": "NonResourceBasedPermissions",
         "Effect": "Allow",
         "Action": [
