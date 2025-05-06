@@ -124,14 +124,14 @@ Some things may not cleanly delete — like VPCs with lingering network interfac
 
 If this happens perform the following 3 steps to remove different aspects:
 1. Databricks leftovers (like schemas/catalogs)
-Drop them directly in Databricks SQL:
+* Drop them directly in Databricks SQL:
 ```sql
 DROP SCHEMA <schema_name> CASCADE;
 DROP CATALOG <catalog_name> CASCADE;
 ```
 
 2. AWS leftovers
-Most resources are tagged with Project = sandbox-<yourname>.
+* Most resources are tagged with Project = sandbox-<yourname>.
 * Option A: Manually delete in the AWS Console (NAT gateways, ENIs, subnets, etc.)
 * Option B: Untag via CLI:
 ```bash
@@ -143,7 +143,7 @@ Then manually delete them, or use aws ec2 delete-* based on type.
 ```
 
 3. Run the cleanup.sh script locally:
-Make sure to set the correct tag in the script:  export SANDBOX_TAG="sandbox-<yourname>"
+* Make sure to set the correct tag in the script:  export SANDBOX_TAG="sandbox-<yourname>"
 ```bash
 chmod +x cleanup.sh
 ./cleanup.sh

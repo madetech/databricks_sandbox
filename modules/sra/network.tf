@@ -11,7 +11,7 @@ module "vpc" {
   azs  = var.availability_zones
 
   enable_dns_hostnames   = true
-  enable_nat_gateway     = true
+  enable_nat_gateway     = var.enable_nat
   single_nat_gateway     = true
   one_nat_gateway_per_az = false
   create_igw             = var.enable_nat
