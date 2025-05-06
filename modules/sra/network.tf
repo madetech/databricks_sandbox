@@ -11,7 +11,7 @@ module "vpc" {
   azs  = var.availability_zones
 
   enable_dns_hostnames   = true
-  enable_nat_gateway     = false
+  enable_nat_gateway     = true
   single_nat_gateway     = true
   one_nat_gateway_per_az = false
   create_igw             = var.enable_nat
@@ -42,23 +42,26 @@ module "vpc" {
 }
 
 #Elastic IP for NAT Gateway
-#
-
+resource "aws_eip" "nat" {
+  count = var.network_configuration != "custom" ? 1 : 0
+  domain = "vpc"
+  # depends_on = [module.vpc]
+}
 
 #NAT Gateway setup for bootstrap access from private subnets
-# resource "aws_nat_gateway" "nat" {
-#   count         = var.network_configuration != "custom" ? 1 : 0
-#   allocation_id = aws_eip.nat[0].id
-#   subnet_id     = module.vpc[0].public_subnets[0] # Assumes VPC module includes public_subnets output
-#   lifecycle {
-#     create_before_destroy = true
-#   }
+resource "aws_nat_gateway" "nat" {
+  count         = var.network_configuration != "custom" ? 1 : 0
+  allocation_id = aws_eip.nat[0].id
+  subnet_id     = module.vpc[0].public_subnets[0] # Assumes VPC module includes public_subnets output
+  lifecycle {
+    create_before_destroy = true
+  }
 
-#   depends_on    = [aws_eip.nat]
-#   tags = {
-#     Name = "${var.resource_prefix}-nat-gateway"
-#   }
-# }
+  depends_on    = [aws_eip.nat]
+  tags = {
+    Name = "${var.resource_prefix}-nat-gateway"
+  }
+}
 
 # Sleep timer to ensure NAT Gateway is fully deleted before subnet removal
 # resource "time_sleep" "wait_for_nat_cleanup" {
@@ -67,11 +70,6 @@ module "vpc" {
 #   depends_on     = [aws_nat_gateway.nat]
 # }
 
-# Dummy null_resource to enforce wait before subnet destroy
-# resource "null_resource" "nat_teardown_buffer" {
-#   count      = var.network_configuration != "custom" ? 1 : 0
-#   depends_on = [time_sleep.wait_for_nat_cleanup]
-# }
 
 # resource "aws_route" "private_subnet_nat" {
 #   count = var.network_configuration != "custom" && var.enable_nat ? length(module.vpc[0].private_route_table_ids) : 0
