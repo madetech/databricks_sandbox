@@ -34,10 +34,6 @@ variable "managed_storage_key" {
   type        = string
 }
 
-variable "managed_storage_key_alias" {
-  description = "CMK for managed storage alias."
-  type        = string
-}
 
 variable "region" {
   description = "AWS region code."
@@ -69,13 +65,6 @@ variable "workspace_storage_key" {
   description = "CMK for workspace storage."
   type        = string
 }
-
-variable "workspace_storage_key_alias" {
-  description = "CMK for workspace storage alias."
-  type        = string
-}
-
-
  variable "workspace_sku" {
   type        = string
   description = "The pricing tier for the Databricks workspace"

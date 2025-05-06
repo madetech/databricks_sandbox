@@ -107,28 +107,52 @@ This will :
 
 ## If everything looks good, your sandbox is now live.
 ------------
-## Destroying the Sandbox (Manual)
-To destroy your sandbox environment locally, especially if you encounter any "already exists" errors during deployment, you have two options:
-1. Manually delete the resources in the AWS Console, or
-2. Run a local Terraform destroy using the steps below.
+## Destroying the Sandbox (via PR title)
+To destroy your sandbox using CI/CD:
 
-To destroy locally:
-1. Navigate to Your Environment Folder
-```bash
-cd environments
+* Temporarily comment out terraform plan and apply in .github/workflows/deploy_destroy.yml
+(otherwise GitHub Actions might try to run both deploy and destroy)
+* Open a new Pull Request with the word destroy in the PR title
+(e.g. destroy sandbox for bob)
+
+The GitHub workflow will then:
+* Run terraform destroy -auto-approve
+* Tear down most associated resources automatically
+
+### Leftovers?
+Some things may not cleanly delete — like VPCs with lingering network interfaces, or UC catalogs/schemas with data.
+
+If this happens perform the following 3 steps to remove different aspects:
+1. Databricks leftovers (like schemas/catalogs)
+* Drop them directly in Databricks SQL:
+```sql
+DROP SCHEMA <schema_name> CASCADE;
+DROP CATALOG <catalog_name> CASCADE;
 ```
-2. Run the following commands:
+
+2. AWS leftovers
+* Most resources are tagged with Project = sandbox-<yourname>.
+* Option A: Manually delete in the AWS Console (NAT gateways, ENIs, subnets, etc.)
+* Option B: Untag via CLI:
 ```bash
-terraform init -reconfigure
-terraform destroy -auto-approve
+aws resourcegroupstaggingapi get-resources \
+  --tag-filters Key=Project,Values=sandbox-<yourname> \
+  --query 'ResourceTagMappingList[].ResourceARN' \
+  --output text | xargs -n 1 aws resourcegroupstaggingapi untag-resources --tag-keys Project --resource-arn-list
+Then manually delete them, or use aws ec2 delete-* based on type.
 ```
-This will:
-* Initialize Terraform using the remote S3 backend.
-* Destroy all provisioned resources using your remote state (environments/terraform.tfstate).
 
-3. Cleanup
-> **Note:** Running `terraform destroy -auto-approve` will remove most resources, but you may still see leftovers due to dependency chains or provider quirks. When that happens, you will just have to go digging in AWS and remove dependancies or a series of dependancies manually (they are always listed so its obvious but may require waiting until they shut down).
+3. Run the cleanup.sh script locally:
+* Make sure to set the correct tag in the script:  export SANDBOX_TAG="sandbox-<yourname>"
+```bash
+chmod +x cleanup.sh
+./cleanup.sh
+```
+This script will:
+* Delete any NAT gateways, subnets, ENIs, EIPs, and security groups tagged with your sandbox name
+* Give Terraform a clean slate on the next deploy
 
+That's it. Hopefully this will remove all resources and any dependancies - last resort is to just go through the AWS resources and see what's not being deleted.
 
 ## Notes for Contributors
 * Do not commit your .env or terraform.tfvars files.
@@ -151,8 +175,6 @@ terraform import \
 Imported existing catalog: sandbox_zeerak_catalog_29677xxxxxx
 Imported external location: sandbox-zeerak-catalog-29677xxxxxx-external-location
 ```
-
-
 
 
 ## Known Limitations

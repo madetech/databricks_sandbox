@@ -4,7 +4,7 @@
 // It wires in the inputs and is where we run `terraform init/plan/apply`
 // ------------------------------------------
 module "sra" {
-  source = "../modules/sra"
+  source = "../../modules/sra"
 
   providers = {
     aws            = aws
@@ -30,33 +30,23 @@ module "sra" {
   availability_zones                = ["eu-west-2a", "eu-west-2b"]
   sg_egress_ports                   = ["443", "2443", "6666", "8443", "8451"]
   region_bucket_name                = "sandbox-bucket-${var.region}"
-  managed_storage_key_alias       = aws_kms_alias.managed_storage_key_alias.name
-  workspace_storage_key_alias     = aws_kms_alias.workspace_storage_key_alias.name
   log_delivery_mws_credentials_name = "Usage Delivery v3"
 }
 
-resource "aws_kms_key" "workspace_storage" {
-  description         = "KMS key for Databricks workspace root bucket"
-  enable_key_rotation = true
-  tags = {
-    Project = var.resource_prefix
-    Name    = "${var.resource_prefix}-workspace-kms"
-  }
-}
+# resource "aws_kms_key" "workspace_storage" {
+#   description         = "KMS key for Databricks workspace root bucket"
+#   enable_key_rotation = true
+#   tags = {
+#     Project = var.resource_prefix
+#     Name    = "${var.resource_prefix}-workspace-kms"
+#   }
+# }
 
-resource "aws_kms_key" "managed_storage" {
-  description         = "KMS key for Databricks managed storage (Unity Catalog)"
-  enable_key_rotation = true
-  tags = {
-    Project = var.resource_prefix
-    Name    = "${var.resource_prefix}-managed-kms"
-  }
-}
-resource "aws_kms_alias" "managed_storage_key_alias" {
-  name          = "alias/${var.resource_prefix}-managed-storage-key"
-  target_key_id = aws_kms_key.managed_storage.id
-}
-resource "aws_kms_alias" "workspace_storage_key_alias" {
-  name          = "alias/${var.resource_prefix}-workspace-storage-key"
-  target_key_id = aws_kms_key.workspace_storage.id
-}
+# resource "aws_kms_key" "managed_storage" {
+#   description         = "KMS key for Databricks managed storage (Unity Catalog)"
+#   enable_key_rotation = true
+#   tags = {
+#     Project = var.resource_prefix
+#     Name    = "${var.resource_prefix}-managed-kms"
+#   }
+# }

@@ -1,6 +1,6 @@
 #Local use only!
 #If you are using locally, then modify these:
-resource_prefix    = "sandbox-zeerak"
+resource_prefix    = "sandbox-bob"
 admin_user         = "zeerak.aziz@madetech.com"
 
 #Leave these:

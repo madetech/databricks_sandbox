@@ -13,7 +13,7 @@ module "vpc" {
   enable_dns_hostnames   = true
   enable_nat_gateway     = var.enable_nat
   single_nat_gateway     = true
-  one_nat_gateway_per_az = var.enable_nat
+  one_nat_gateway_per_az = false
   create_igw             = var.enable_nat
 
   public_subnet_names = [for az in var.availability_zones : format("%s-public-%s", var.resource_prefix, az)]
@@ -25,29 +25,52 @@ module "vpc" {
   intra_subnet_names = [for az in var.availability_zones : format("%s-privatelink-%s", var.resource_prefix, az)]
   intra_subnets      = var.privatelink_subnets_cidr
 
+  # Disable features that cause dependency cycles if unused
+  manage_default_route_table = false
+  enable_vpn_gateway         = false
+  enable_dhcp_options        = false
+  enable_flow_log            = false
+
+  # depends_on = [aws_nat_gateway.nat]
+  # Wait for NAT GW to clean up before deleting subnets
+  # depends_on = [time_sleep.wait_for_nat_cleanup]
+
+
   tags = {
     Project = var.resource_prefix
   }
 }
 
-
-# NAT Gateway setup for bootstrap access from private subnets
+#Elastic IP for NAT Gateway
 resource "aws_eip" "nat" {
   count = var.network_configuration != "custom" ? 1 : 0
   domain = "vpc"
-  depends_on = [module.vpc]
-
+  # depends_on = [module.vpc]
 }
 
+#NAT Gateway setup for bootstrap access from private subnets
 resource "aws_nat_gateway" "nat" {
   count         = var.network_configuration != "custom" ? 1 : 0
   allocation_id = aws_eip.nat[0].id
   subnet_id     = module.vpc[0].public_subnets[0] # Assumes VPC module includes public_subnets output
-  depends_on    = [module.vpc]
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  depends_on    = [aws_eip.nat]
   tags = {
     Name = "${var.resource_prefix}-nat-gateway"
   }
 }
+
+# Sleep timer to ensure NAT Gateway is fully deleted before subnet removal
+# resource "time_sleep" "wait_for_nat_cleanup" {
+#   count          = var.network_configuration != "custom" ? 1 : 0
+#   create_duration = "90s"
+#   depends_on     = [aws_nat_gateway.nat]
+# }
+
+
 # resource "aws_route" "private_subnet_nat" {
 #   count = var.network_configuration != "custom" && var.enable_nat ? length(module.vpc[0].private_route_table_ids) : 0
 
